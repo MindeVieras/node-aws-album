@@ -1,25 +1,19 @@
-// var mysql = require('mysql');
+const mysql = require('mysql');
 
-// var connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password : 'root',
-//   database:'album'
-// });
+const host = process.env.DB_HOST || 'localhost';
+const user = process.env.DB_USER || 'root';
+const pass = process.env.DB_PASS || 'root';
+const name = process.env.DB_NAME || 'album';
 
-// connection.connect(function(err) {
-//     if (err) throw err;
-// });
+const connection = mysql.createConnection({
+  host: host,
+  user: user,
+  password : pass,
+  database: name
+});
 
-// module.exports = connection;
+connection.connect(function(err) {
+    if (err) throw err;
+});
 
-// config/database.js
-module.exports = {
-    'connection': {
-        'host': 'localhost',
-        'user': 'root',
-        'password': 'root'
-    },
-  'database': 'album',
-    'users_table': 'users'
-};
+module.exports = connection;
