@@ -1,87 +1,134 @@
-var express = require('express');
-var path = require('path');
+// server.js
+
+// set up ======================================================================
+// get all the tools we need
+var express  = require('express');
+var exphbs   = require('express-handlebars');
+var session  = require('express-session');
+var http     = require('http');
+var path     = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var expressValidator = require('express-validator');
-var flash = require('connect-flash');
-var session = require('express-session');
+var morgan   = require('morgan');
+var app      = express();
+var port     = process.env.PORT || 8080;
+
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+var flash    = require('connect-flash');
 
-mongoose.connect('mongodb://localhost/loginapp');
-var db = mongoose.connection;
+// configuration ===============================================================
+// connect to our database
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+require('./config/passport')(passport); // pass passport for configuration
 
-// Init App
-var app = express();
 
-// View Engine
-app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout:'layout'}));
+
+// set up our express application
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+
+// Create `ExpressHandlebars` instance with a default layout.
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    // helpers      : [
+    //   'app/config'
+    // ],
+    partialsDir: [
+        'views/partials/'
+    ]
+});
+
+// Set template engine
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// BodyParser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// required for passport
+app.use(session({
+  secret: '<3qjH{rqF,478O`b|+|M>a4H(gR-X>/2rzN*22tI|n5<nm<PU,fX~g659^8)$E;S',
+  resave: true,
+  saveUninitialized: true
+ } )); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
-// Set Static Folder
+
+// routes ======================================================================
+require('./routes/index.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/login.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
+// Set static dir fir css and front js
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Express Session
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
-
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
-
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-
-// Connect Flash
-app.use(flash());
-
-// Global Vars
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
-  next();
+// Start HTTP server
+app.set('port', process.env.PORT || 3000);
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Server listening on port ' + app.get('port'));
 });
 
+// const express = require('express');
+// const http = require('http');
+// const path = require('path');
+// const exphbs = require('express-handlebars');
+// const cookieParser = require('cookie-parser');
+// const flash = require('connect-flash');
+// const session = require('express-session');
+// const Store = require('express-session').Store;
+// const passport = require('passport');
 
 
-app.use('/', routes);
-app.use('/users', users);
 
-// Set Port
-app.set('port', (process.env.PORT || 3000));
+// const morgan = require('morgan');
 
-app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
-});
+// const routes = require('./routes/index');
+// const login = require('./routes/login');
+
+// const app = express();
+
+// // Create `ExpressHandlebars` instance with a default layout.
+// const hbs = exphbs.create({
+//     defaultLayout: 'main',
+//     // helpers      : [
+//     //   'app/config'
+//     // ],
+//     partialsDir: [
+//         'views/partials/'
+//     ]
+// });
+
+// // Set template engine
+// app.engine('handlebars', hbs.engine);
+// app.set('view engine', 'handlebars');
+
+// app.use(morgan('dev')); // log every request to the console
+
+
+// // Express Session
+// app.use(session({
+//     secret: 'secret',
+//     saveUninitialized: true,
+//     resave: true
+// }));
+
+// app.use(flash());
+
+// // Passport init
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// // Use all routes
+// app.use('/', routes);
+// app.use('/login', login);
+
+// // Set static dir fir css and front js
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// // Start HTTP server
+// app.set('port', process.env.PORT || 3000);
+// http.createServer(app).listen(app.get('port'), function(){
+//   console.log('Server listening on port ' + app.get('port'));
+// });
