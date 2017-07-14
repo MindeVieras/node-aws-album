@@ -3,6 +3,7 @@ node_modules
 
 *.DS_Store
 *.map
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

@@ -35,14 +35,6 @@ module.exports = function(grunt) {
         //             'jquery-validation',
         //             'parsleyjs'
         //         ]
-        //     },
-        //     login: {
-        //         dest: {
-        //             js: './public/js/bower/login.js'
-        //         },
-        //         include: [
-        //             'jquery',
-        //         ]
         //     }
         // },
         //JS
@@ -51,19 +43,6 @@ module.exports = function(grunt) {
         //         files: {
         //             './assets/js/scripts.min.js': [
         //                 './app/assets/js/Web/*.js'
-        //             ]
-        //         },
-        //         options: {
-        //             beauty: true,
-        //             mangle: false,
-        //             compress: false,
-        //             sourceMap: true
-        //         }
-        //     },
-        //     login: {
-        //         files: {
-        //             './assets/js/login.min.js': [
-        //                 './app/assets/js/Login/**/*.js'
         //             ]
         //         },
         //         options: {
@@ -92,12 +71,6 @@ module.exports = function(grunt) {
             //     files: ['./app/assets/js/Web/**/*.js'],
             //     tasks : [
             //         'uglify:web'
-            //     ]
-            // },
-            // js_login: {
-            //     files: ['./app/assets/js/Login/**/*.js'],
-            //     tasks : [
-            //         'uglify:login'
             //     ]
             // },
             sass_web: {

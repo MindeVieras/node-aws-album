@@ -10,7 +10,6 @@ module.exports = function(app, passport) {
     console.log(process.env.HOME);
     res.render('login', {
       layout: false,
-      title: process.env.DB_NAME || 'home',
       message: req.flash('loginMessage')
     });
   });
