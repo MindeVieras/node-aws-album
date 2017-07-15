@@ -52,9 +52,10 @@ app.use(passport.session());
 app.use(flash());
 
 // routes
-require('./routes/index.js')(app, passport);
-require('./routes/login.js')(app, passport);
-require('./routes/user.js')(app, passport);
+require('./routes/index')(app, passport);
+require('./routes/login')(app, passport);
+require('./routes/album')(app, passport);
+require('./routes/user')(app, passport);
 
 // Set static dir dir css and front js
 app.use(express.static(path.join(__dirname, 'public')));
