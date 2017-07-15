@@ -6,8 +6,6 @@ module.exports = function(app, passport) {
   // =====================================
   // show the login form
   app.get('/login', function(req, res) {
-    // render the page and pass in any flash data if it exists
-    console.log(process.env.HOME);
     res.render('login', {
       layout: false,
       message: req.flash('loginMessage')

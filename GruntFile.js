@@ -24,55 +24,55 @@ module.exports = function(grunt) {
                 }
             }
         },
-        // bower_concat: {
-        //     web: {
-        //         dest: {
-        //             js: './assets/js/bower/web.js'
-        //         },
-        //         include: [
-        //             'jquery',
-        //             //'izimodal'
-        //             'jquery-validation',
-        //             'parsleyjs'
-        //         ]
-        //     }
-        // },
+        bower_concat: {
+            web: {
+                dest: {
+                    js: './public/js/bower/web.js'
+                },
+                include: [
+                    'jquery',
+                    //'izimodal'
+                    'jquery-validation',
+                    //'parsleyjs'
+                ]
+            }
+        },
         //JS
-        // uglify: {
-        //     web: {
-        //         files: {
-        //             './assets/js/scripts.min.js': [
-        //                 './app/assets/js/Web/*.js'
-        //             ]
-        //         },
-        //         options: {
-        //             beauty: true,
-        //             mangle: false,
-        //             compress: false,
-        //             sourceMap: true
-        //         }
-        //     },
-        //     bower: {
-        //         files: {
-        //             './assets/js/login-libs.min.js': ['./assets/js/bower/login.js'],
-        //             './assets/js/libs.min.js': ['./assets/js/bower/web.js']
-        //         },
-        //         options: {
-        //             beauty: true,
-        //             mangle: false,
-        //             compress: false,
-        //             sourceMap: true
-        //         }
-        //     }
-        // },
+        uglify: {
+            web: {
+                files: {
+                    './public/js/scripts.min.js': [
+                        './public/scripts/*.js'
+                    ]
+                },
+                options: {
+                    beauty: true,
+                    mangle: false,
+                    compress: false,
+                    sourceMap: true
+                }
+            },
+            bower: {
+                files: {
+                    //'./assets/js/login-libs.min.js': ['./assets/js/bower/login.js'],
+                    './public/js/libs.min.js': ['./public/js/bower/web.js']
+                },
+                options: {
+                    beauty: true,
+                    mangle: false,
+                    compress: false,
+                    sourceMap: true
+                }
+            }
+        },
         // Watch
         watch: {
-            // js_web: {
-            //     files: ['./app/assets/js/Web/**/*.js'],
-            //     tasks : [
-            //         'uglify:web'
-            //     ]
-            // },
+            js_web: {
+                files: ['./public/scripts/**/*.js'],
+                tasks : [
+                    'uglify:web'
+                ]
+            },
             sass_web: {
                 files: ['./public/sass/web/**/*.scss'],
                 tasks: [
@@ -104,9 +104,9 @@ module.exports = function(grunt) {
 
     // Task definition
     grunt.registerTask('default', [
-        //'bower_concat',
+        'bower_concat',
         'sass',
-        //'uglify',
+        'uglify',
         'watch'
     ]);
 

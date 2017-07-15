@@ -4,12 +4,14 @@
 @import '../variables/colors';
 
 //@import 'partials/grid';
+@import 'partials/header';
 @import 'partials/modal';
 @import 'partials/inputs';
 @import 'partials/buttons';
 @import 'partials/footer';
 
 body {
+  background: #FFFFFF;
   font-family: 'Ubuntu', sans-serif;
   font-size: 16px;
   line-height: 1;
@@ -21,6 +23,15 @@ ul {
   margin: 0;
 }
 
-#main-content {
+#site-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#site-content {
+  margin-top: 50px;
   padding: 20px;
 }

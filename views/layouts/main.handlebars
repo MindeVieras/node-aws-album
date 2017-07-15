@@ -2,27 +2,18 @@
 <html>
 <head>
 	<title>LoginApp</title>
-	<link rel="stylesheet" href="/css/styles.min.css" />
+  {{> general/metahead}}
 </head>
 <body>
-	<div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            {{#if user}}
-              <li role="presentation"><a href="/">Dashboard</a></li>
-              <li role="presentation"><a href="/user/logout">Logout</a></li>
-            {{else}}
-              <li role="presentation"><a href="/logout">Logout</a></li>
-              <li role="presentation"><a href="/users/register">Register</a></li>
-            {{/if}}
-          </ul>
-        </nav>
-        <h3 class="text-muted">LoginApp</h3>
-      </div>
+	<div id="site-container">
+
+      <header id="site-header">
+        {{> general/header}}
+      </header>
 
 
-      <div class="row">
+      <div id="site-content">
+      
         <div class="col-lg-12">
           {{#if success_msg}}
             <div class="alert alert-success">{{success_msg}}</div>
