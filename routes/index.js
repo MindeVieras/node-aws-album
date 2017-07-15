@@ -2,7 +2,9 @@
 module.exports = function(app, passport) {
 
   app.get('/', isLoggedIn, function(req, res) {
-    res.render('home');
+    res.render('home', {
+      user: req.user
+    });
   });
 
 };

@@ -17,6 +17,7 @@
     "express": "*",
     "express-handlebars": "*",
     "express-session": "^1.15.3",
+    "handlebars-helpers": "^0.9.3",
     "morgan": "^1.8.2",
     "mysql": "^2.13.0",
     "passport": "^0.3.2",

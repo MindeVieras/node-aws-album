@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
   // LOGIN ===============================
   // =====================================
   // list all users
-  app.get('/users', isLoggedIn, function(req, res) {
+  app.get('/users', isAdmin, function(req, res) {
     
     //res.send(JSON.stringify(req.flash('test')));
        
@@ -21,6 +21,7 @@ module.exports = function(app, passport) {
           res.render('user/list', {
             title: 'All users',
             users: rows,
+            user: req.user
             //message: req.flash('loginMessage')
           });
                            
@@ -29,16 +30,17 @@ module.exports = function(app, passport) {
   });
 
   // get new user form
-  app.get('/user/add', isLoggedIn, function(req, res) {
+  app.get('/user/add', isAdmin, function(req, res) {
     // console.log(req.user);
     res.render('user/add', {
-      title: 'Add new user'
+      title: 'Add new user',
+      user: req.user
     });
        
   });
 
   // save new user
-  app.post('/user/add', isLoggedIn, function(req, res) {
+  app.post('/user/add', isAdmin, function(req, res) {
       //console.log(req);
 
       let input = JSON.parse(JSON.stringify(req.body));
@@ -48,8 +50,8 @@ module.exports = function(app, passport) {
           res.send(JSON.stringify({ack:'err', msg: 'Username is required'}));
           return false;
       }
-      if (validator.isLength(input.username, {min:0, max:5})) {
-          res.send(JSON.stringify({ack:'err', msg: 'Username must be at least 6 chars long'}));
+      if (validator.isLength(input.username, {min:0, max:4})) {
+          res.send(JSON.stringify({ack:'err', msg: 'Username must be at least 5 chars long'}));
           return false;
       }
       if (!validator.isEmail(input.email) && !validator.isEmpty(input.email)){
@@ -125,10 +127,10 @@ module.exports = function(app, passport) {
 };
 
 // route middleware to make sure
-function isLoggedIn(req, res, next) {
+function isAdmin(req, res, next) {
 
   // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
+  if (req.isAuthenticated() && req.user.access_level === 100)
     return next();
 
   // if they aren't redirect them to the home page

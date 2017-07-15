@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const helpers = require('handlebars-helpers')();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -11,7 +12,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const app = express();
 
-
+//console.log(helpers);
 // configuration ===============================================================
 // connect to our database
 
@@ -30,9 +31,7 @@ app.use(bodyParser.json());
 // Create `ExpressHandlebars` instance with a default layout.
 const hbs = exphbs.create({
     defaultLayout: 'main',
-    // helpers      : [
-    //   'app/config'
-    // ],
+    helpers: helpers,
     partialsDir: [
         'views/partials/'
     ]
@@ -51,7 +50,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
 
 // routes
 require('./routes/index.js')(app, passport);
