@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
           console.log("Error Selecting : %s ",err );
      
           res.render('user/list', {
-            //layout: false,
+            title: 'All users',
             users: rows,
             //message: req.flash('loginMessage')
           });
@@ -31,7 +31,9 @@ module.exports = function(app, passport) {
   // get new user form
   app.get('/user/add', isLoggedIn, function(req, res) {
     // console.log(req.user);
-    res.render('user/add');
+    res.render('user/add', {
+      title: 'Add new user'
+    });
        
   });
 

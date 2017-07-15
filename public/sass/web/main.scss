@@ -11,10 +11,15 @@
 @import 'partials/footer';
 
 body {
-  background: #FFFFFF;
+  background: $white;
   font-family: 'Ubuntu', sans-serif;
   font-size: 16px;
   line-height: 1;
+}
+
+a {
+  text-decoration: none;
+  color: $blue;
 }
 
 ul {
