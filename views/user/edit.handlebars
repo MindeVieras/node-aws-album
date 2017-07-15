@@ -4,9 +4,12 @@
     <div class="form-wrapper">
         <form id="add_user" action="/user/add" method="post">
             <div class="error-msg"></div>
+
+            <input type="hidden" id="id" name="id" value="{{saved_user.id}}">
+
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{saved_user.username}}">
             </div>
 
             <div class="form-group">
@@ -31,8 +34,8 @@
             <div class="form-group">
                 <label for="access_level">Access Level</label>
                 <select class="form-control" id="access_level">
-                  <option value="100">Administrator</option>
-                  <option value="50" selected>Simple user</option>
+                  <option value="100" {{#is saved_user.access_level 100}}selected{{/is}}>Administrator</option>
+                  <option value="50" {{#is saved_user.access_level 50}}selected{{/is}}>Simple user</option>
                 </select>
             </div>
 

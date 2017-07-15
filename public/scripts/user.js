@@ -21,6 +21,7 @@ Album.addUser = function() {
           url: '/user/add',
           dataType: "json",
           success: function (res) {
+            console.log(res);
             if (res.ack == 'ok') {
               window.location.replace('/users');
             }
