@@ -52,6 +52,7 @@ app.use(passport.session());
 app.use(flash());
 
 // routes
+require('./routes/api')(app, passport);
 require('./routes/index')(app, passport);
 require('./routes/login')(app, passport);
 require('./routes/album')(app, passport);

@@ -6,7 +6,8 @@
 //@import 'partials/grid';
 @import 'partials/header';
 @import 'partials/datetimepicker';
-@import 'partials/modal';
+// @import 'partials/modal';
+@import 'partials/dropzone';
 // @import 'partials/forms';
 @import 'partials/inputs';
 @import 'partials/buttons';
@@ -43,3 +44,35 @@ ul {
 #site-content {
   padding: 50px 20px 0px 20px;
 }
+
+
+
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+.hide {
+  display: none !important;
+}
+.show {
+  display: block !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.text-hide {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.hidden {
+  display: none !important;
+}
+.affix {
+  position: fixed;
+}
+

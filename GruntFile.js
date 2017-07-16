@@ -32,12 +32,17 @@ module.exports = function(grunt) {
                 include: [
                     'jquery',
                     'jquery-validation',
+                    'exif-js',
                     'moment',
+                    'dropzone',
                     'eonasdan-bootstrap-datetimepicker',
                     'tinymce',
                     //'izimodal'
                     //'parsleyjs'
-                ]
+                ],
+                dependencies: {
+                    'dropzone': 'jquery'
+                }
             }
         },
         //JS

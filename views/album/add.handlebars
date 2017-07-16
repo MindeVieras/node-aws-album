@@ -51,20 +51,20 @@
                 Memory limit: get_ini('memory_limit')
             </small></div>
         </div> -->
-<!--         
-        {# dropzone preview #}
+        
+        <!-- dropzone preview -->
         <div class="list-group files" id="previews">
-            {% include 'Admin/partials/dropzone-album.html' %}
-        </div> -->
+            {{> general/dropzone_album}}
+        </div>
 
-<!--         {# dropzone input #}
+        <!-- dropzone input -->
         <div class="form-group">
             <span class="btn btn-success fileinput-button dz-clickable">
                 <i class="glyphicon glyphicon-plus"></i>
                 <span>Add files...</span>
             </span>
         </div>
-        <div id="img_urls" class="hidden"></div> -->
+        <div id="files_urls" class=""></div>
 <!-- 
         {# location field #}
         <div class="form-group">

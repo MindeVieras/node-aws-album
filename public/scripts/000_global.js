@@ -32,7 +32,7 @@ var Album = (function() {
 
 $(document).ready(function() {
 
-    //Dropzone.autoDiscover = false;
+    Dropzone.autoDiscover = false;
 
     $(document.body).on('click', "[data-remote!=''][data-remote]", function(event) {
         event.preventDefault();
