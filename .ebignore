@@ -1,0 +1,17 @@
+.git
+.sass-cache
+node_modules
+bower_components
+
+public/scripts
+public/sass
+
+.gitignore
+bower.json
+GruntFile.js
+README.md
+
+*.DS_Store
+*.map
+
+.elasticbeanstalk
