@@ -34,6 +34,7 @@ module.exports = function(grunt) {
                     'jquery-validation',
                     'moment',
                     'eonasdan-bootstrap-datetimepicker',
+                    'tinymce',
                     //'izimodal'
                     //'parsleyjs'
                 ]
@@ -44,6 +45,7 @@ module.exports = function(grunt) {
             web: {
                 files: {
                     './public/js/scripts.min.js': [
+                        './bower_components/tinymce/themes/modern/theme.js',
                         './public/scripts/*.js'
                     ]
                 },

@@ -10,7 +10,7 @@ Album.initView = function() {
     // Photobum.initSelect();
     // Photobum.initFreewall();
     Album.initDatepicker();
-    // Photobum.initEditors();
+    Album.initEditors();
     // Photobum.initDropzone();
     // Photobum.initMap();
 };
@@ -200,19 +200,19 @@ Album.initDatepicker = function () {
   
 };
 
-// Photobum.initEditors = function() {
-//     tinymce.remove();
+Album.initEditors = function() {
+    tinymce.remove();
 
-//     $("[data-tinymce]").each(function(){
-//         tinymce.init({
-//             skin_url: '/assets/tinymce/skins/lightgray',
-//             insert_toolbar: false,
-//             menubar:false,
-//             selector: '#'+$(this).attr('id'),
-//             height: '150',
-//         });
-//     });
-// };
+    $("[data-tinymce]").each(function(){
+        tinymce.init({
+            skin_url: '/tinymce/skins/lightgray',
+            insert_toolbar: false,
+            menubar:false,
+            selector: '#'+$(this).attr('id'),
+            height: '150',
+        });
+    });
+};
 
 // Photobum.initDropzone = function() {
 

@@ -25,9 +25,7 @@ Album.addAlbum = function() {
 
   $('#add_album').validate({
       rules: {
-          name: {required: true},
-          start_date: {required: true},
-          end_date: {required: true}
+          name: {required: true}
       },
       submitHandler: function(form) {
         var data = {
@@ -35,6 +33,7 @@ Album.addAlbum = function() {
             name: $('#add_album #name').val(),
             start_date: $('#add_album #start_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
             end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
+            body: tinyMCE.get('album_body').getContent(),
             // email: $('#add_user #email').val(),
             // display_name: $('#add_user #display_name').val(),
             // password: $('#add_user #password').val(),
