@@ -1,9 +1,9 @@
 # Node.js AWS Album
 
-This is a aws album app and registration app using Node.js, Express, Passport and Mongoose. It is part of the YouTube series [here](https://www.youtube.com/watch?v=Z1ktxiqyiLA)
+This is a aws album app using Node.js, Express, Passport and MySql.
 
 ### Version
-0.1.0
+0.0.2
 
 ### Usage
 
@@ -17,5 +17,13 @@ $ npm install
 ```
 
 ```sh
-$ npm start
+$ bower install
+```
+
+```sh
+$ grunt
+```
+
+```sh
+$ node app.js
 ```
