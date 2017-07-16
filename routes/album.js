@@ -4,9 +4,9 @@ const album_model = require('../models/album');
 module.exports = function(app, passport) {
 
   app.get('/albums', isAuthed, album_model.list);
-  // app.get('/user/add', isAdmin, user_model.add);
+  app.get('/album/add', isAdmin, album_model.add);
+  app.post('/album/add', isAdmin, album_model.save);
   // app.get('/user/edit/:id', isAdmin, user_model.edit);
-  // app.post('/user/add', isAdmin, user_model.save);
 
 };
 

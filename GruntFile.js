@@ -31,8 +31,10 @@ module.exports = function(grunt) {
                 },
                 include: [
                     'jquery',
-                    //'izimodal'
                     'jquery-validation',
+                    'moment',
+                    'eonasdan-bootstrap-datetimepicker',
+                    //'izimodal'
                     //'parsleyjs'
                 ]
             }

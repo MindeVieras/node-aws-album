@@ -17,7 +17,9 @@
     "jquery": "^3.2.0",
     "izitoast": "^1.1.2",
     "parsleyjs": "^2.7.2",
-    "jquery-validation": "^1.16.0"
+    "jquery-validation": "^1.16.0",
+    "datetimepicker": "^2.5.4",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47"
   },
   "resolutions": {
     "jquery": "^3.2.0"

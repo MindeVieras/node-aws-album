@@ -90,7 +90,7 @@ $(document).ready(function() {
         $(ModalList.pop()).remove();
     });
 
-    //Album.initView();
+    Album.initView();
 
     window.getFunctionFromString = function (string) {
         var scope = window;

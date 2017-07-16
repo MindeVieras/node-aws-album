@@ -1,6 +1,7 @@
 
-var validator = require('validator');
-var connection = require('../config/db');
+const validator = require('validator');
+const moment = require('moment');
+const connection = require('../config/db');
 
 // Gets users list
 exports.list = function(req, res){
@@ -21,8 +22,8 @@ exports.list = function(req, res){
 
 // Gets add user template
 exports.add = function(req, res){
-    res.render('user/add', {
-      title: 'Add new user',
+    res.render('album/add', {
+      title: 'Add new album',
       user: req.user
     });
 };
@@ -48,65 +49,57 @@ exports.edit = function(req, res){
 
 // Saves user
 exports.save = function(req, res){
-
-    let input = JSON.parse(JSON.stringify(req.body));
-    let userId = input.id;
     
+    let input = JSON.parse(JSON.stringify(req.body));
+    //let userId = input.id;
+    //res.send(JSON.stringify({ack:'err', msg: 'Start date required'}));
     // vlaidate form
-    if (validator.isEmpty(input.username)) {
-        res.send(JSON.stringify({ack:'err', msg: 'Username is required'}));
+    if (validator.isEmpty(input.name)) {
+        res.send(JSON.stringify({ack:'err', msg: 'Name is required'}));
         return false;
     }
-    if (validator.isLength(input.username, {min:0, max:4})) {
-        res.send(JSON.stringify({ack:'err', msg: 'Username must be at least 5 chars long'}));
+    if (validator.isLength(input.name, {min:0, max:2})) {
+        res.send(JSON.stringify({ack:'err', msg: 'Name must be at least 3 chars long'}));
         return false;
     }
-    if (!validator.isEmail(input.email) && !validator.isEmpty(input.email)){
-        res.send(JSON.stringify({ack:'err', msg: 'Email must be valid'}));
-        return false;
-    }
-    if (validator.isEmpty(input.password) && !userId){
-        res.send(JSON.stringify({ack:'err', msg: 'Password is required'}));
-        return false;
-    }
-    if (!validator.equals(input.confirm_password, input.password)){
-        res.send(JSON.stringify({ack:'err', msg: 'Passwords must match'}));
-        return false;
-    }
+
     //req.getConnection(function (err, connection) {
 
     let data = {
-        username : input.username,
-        email : input.email,
-        password: bcrypt.hashSync(input.password, null, null),
-        display_name: input.display_name,
-        access_level: input.access_level,
-        author: req.user.id,
-        status: input.status
+        name : input.name,
+        start_date : input.start_date,
+        end_date : input.end_date,
+        // password: bcrypt.hashSync(input.password, null, null),
+        // display_name: input.display_name,
+        // access_level: input.access_level,
+        // author: req.user.id,
+        // status: input.status
     };
-    // res.send(JSON.stringify(data));
-    if (userId) {
-      //res.send(JSON.stringify(data));
-      delete data.author;
-      delete data.password;
-      connection.query('UPDATE users set ? WHERE id = ?', [data, userId], function(err,rows)     {
-              
-          if(err)
-            console.log('Error saving user : %s ',err );
 
-          res.send(JSON.stringify({ack:'ok'}));
-                             
-        });
-    } else {
-      connection.query('INSERT INTO users set ? ',data, function(err,rows)     {
+    res.send(JSON.stringify(data));
+    return false;
+    // if (userId) {
+    //   //res.send(JSON.stringify(data));
+    //   delete data.author;
+    //   delete data.password;
+    //   connection.query('UPDATE users set ? WHERE id = ?', [data, userId], function(err,rows)     {
               
-          if(err)
-            console.log('Error saving user : %s ',err );
+    //       if(err)
+    //         console.log('Error saving user : %s ',err );
 
-          res.send(JSON.stringify({ack:'ok'}));
+    //       res.send(JSON.stringify({ack:'ok'}));
                              
-        });
-    }
+    //     });
+    // } else {
+    //   connection.query('INSERT INTO users set ? ',data, function(err,rows)     {
+              
+    //       if(err)
+    //         console.log('Error saving user : %s ',err );
+
+    //       res.send(JSON.stringify({ack:'ok'}));
+                             
+    //     });
+    // }
 };
 
 // module.exports.getUserByUsername = function(username, callback){
