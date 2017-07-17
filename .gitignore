@@ -5,6 +5,8 @@ bower_components
 public/css
 public/js
 
+uploads
+
 aws-keys.json
 
 *.DS_Store
