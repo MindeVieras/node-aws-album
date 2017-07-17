@@ -6,6 +6,8 @@ bower_components
 public/scripts
 public/sass
 
+uploads
+
 .gitignore
 bower.json
 GruntFile.js
