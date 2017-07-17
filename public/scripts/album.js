@@ -33,13 +33,15 @@ Album.addAlbum = function() {
             name: $('#add_album #name').val(),
             start_date: $('#add_album #start_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
             end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
-            body: tinyMCE.get('album_body').getContent(),
-            // email: $('#add_user #email').val(),
-            // display_name: $('#add_user #display_name').val(),
-            // password: $('#add_user #password').val(),
-            // confirm_password: $('#add_user #confirm_password').val(),
-            // access_level: $('#add_user #access_level').val(),
-            // status: $('#add_user #status').is(":checked") ? 1 : 0
+            body: tinyMCE.get('album_body').getContent(),        
+            media: $('#add_album .file_url').map(function(){
+                return {
+                    filename: $(this).data('filename'),
+                    weight: $(this).data('weight'),
+                    file_type: $(this).data('type'),
+                    value: $(this).val()
+                }
+            }).get(),
         };
         console.log(data);
         $.ajax({
@@ -50,7 +52,7 @@ Album.addAlbum = function() {
           success: function (res) {
             console.log(res);
             if (res.ack == 'ok') {
-              window.location.replace('/albums');
+              //window.location.replace('/albums');
             }
             else {
               $('#add_album .error-msg').text(res.msg);
@@ -60,7 +62,80 @@ Album.addAlbum = function() {
         return false;
       }
   });
+
 }
+
+
+Album.initDropzone = function() {
+
+    $('#add_album').dropzone({
+        init: function() {
+
+            var dropzone = this;
+            var field = $('#files_urls');
+
+            i = 1;
+            this.on("addedfile", function(file) {
+                console.log(file);
+
+                if(file.type.includes('image')){
+                    EXIF.getData(file, function() {
+                        var date = EXIF.getTag(this, 'DateTimeOriginal');
+                        var make = EXIF.getTag(this, 'Make');
+                        var model = EXIF.getTag(this, 'Model');
+                        var allMetaData = EXIF.getAllTags(this);
+
+                        $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
+                        $(file.previewElement).find('.make-model').text(make+' ('+model+')');
+                    });
+                }
+
+                var preview = $(file.previewElement);
+                preview.attr('data-index', i++);
+
+            });
+            this.on("success", function(file, response) {
+                console.log(response);
+                s3bucket = '//s3-eu-west-1.amazonaws.com/images.album.mindelis.com/';
+                indx = $(file.previewElement).attr('data-index');
+                w  = indx - 1;
+                type = file.type.includes('image') ? 'image' : 'video';
+                field.append('<input name="file_url[]" data-type="'+type+'" data-filename="'+response.new_filename+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.path+'">');
+                if(type == 'video'){
+                    var videoPath = s3bucket+response.location;
+                    var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+                    $(file.previewElement).find('.preview').append(video);
+                    $(file.previewElement).addClass('video-preview-item');
+                }
+                $(file.previewElement).find('.progress-wrapper').hide();
+                $(file.previewElement).find('.file-status').show();
+            });
+            this.on("removedfile", function(file) {
+                indx = $(file.previewElement).attr('data-index');
+                $('.file_url[data-index="'+indx+'"]').remove();
+            });
+            this.on("error", function(file, message) { 
+              console.log(message);
+            });
+
+        },
+        url: "/upload-album-media",
+        thumbnailWidth: 320,
+        thumbnailHeight: 210,
+        parallelUploads: 1,
+        acceptedFiles: ".jpg,.jpeg,.png,.gif,.mp4,.mpg,.mkv,.avi",
+        previewTemplate: $('#template').html(),
+        headers: { 'Accept': "*/*" },
+        previewsContainer: "#previews",
+        clickable: ".fileinput-button"
+    });
+
+    $('.remove-media-file').click(function(){
+        index = $(this).attr('data-index');
+        $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
+        $(this).closest('.list-group-item').remove();
+    });
+};
 
 
 

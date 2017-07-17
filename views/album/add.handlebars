@@ -65,6 +65,7 @@
             </span>
         </div>
         <div id="files_urls" class=""></div>
+
 <!-- 
         {# location field #}
         <div class="form-group">
@@ -102,60 +103,12 @@
     <input type="checkbox" id="album_private" name="album_private" data-checkbox="privateToggle">
 </div> -->
 
-
         <input type="submit" class="btn btn-success" value="Save">
     
     </form>
 
     <script>
       Album.addAlbum();
+      Album.initDropzone();
     </script>
 
-</div>
-
-
-
-<!--     <div class="form-wrapper">
-        <form id="add_album" action="/album/add" method="post">
-            <div class="error-msg"></div>
-            <div class="form-group">
-                <label for="username">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
-            </div>
-
-            <div class="form-group">
-                <label for="display_name">Display name</label>
-                <input type="text" class="form-control" id="display_name" name="display_name" placeholder="Name or Nickname">
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name ="email" placeholder="mail@email.com">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="password">
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="password">
-            </div>
-
-            <div class="form-group">
-                <label for="access_level">Access Level</label>
-                <select class="form-control" id="access_level">
-                  <option value="100">Administrator</option>
-                  <option value="50" selected>Simple user</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="status">Status</label>
-                <input type="checkbox" id="status" name="status" checked>
-            </div>
-
-            <input type="submit" class="btn btn-success" value="Save">
-        </form>
-    
-    </div> -->

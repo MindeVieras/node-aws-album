@@ -3,11 +3,30 @@ const validator = require('validator');
 const moment = require('moment');
 const connection = require('../config/db');
 
+const AWS = require('aws-sdk');
 // Gets users list
 exports.upload = function(req, res){
-    
+  //console.log(upload);
+  // console.log(req.files);
+  return false;
+    //res.setHeader('Content-Type', 'application/json');
+    // AWS.config.loadFromPath('aws-keys.json');
+    // let s3Bucket = new AWS.S3({params:{
+    //     Bucket: 'media.album.mindelis.com',
+    //     ACL: 'public-read'
+    // }});
 
-    res.send(JSON.stringify({ack:'err', msg: 'Name is required'}));
+    // var data = {Key: 'image.jpg', Body: imageFile};
+    // s3Bucket.putObject(data, function(err, data){
+    //     if (err) {
+    //         console.log('Error uploading data: ', data); 
+    //     } else {
+    //         console.log('succesfully uploaded the image!';
+    //     }
+    // });
+
+    // res.send(s3Bucket);
+    res.send(JSON.stringify({ack:'err', msg: req}));
     return false;
    // connection.query('SELECT * FROM albums',function(err,rows)     {
           

@@ -11,7 +11,7 @@ Album.initView = function() {
     // Photobum.initFreewall();
     Album.initDatepicker();
     Album.initEditors();
-    Album.initDropzone();
+    //Album.initDropzone();
     // Photobum.initMap();
 };
 
@@ -213,78 +213,76 @@ Album.initEditors = function() {
     });
 };
 
-Album.initDropzone = function() {
+// Album.initDropzone = function() {
 
-    $('#add_album').dropzone({
-        init: function() {
+//     $('#add_album').dropzone({
+//         init: function() {
 
-            var dropzone = this;
-            var field = $('#files_urls');
+//             var dropzone = this;
+//             var field = $('#files_urls');
 
-            i = 1;
-            this.on("addedfile", function(file) {
-                console.log(file);
+//             i = 1;
+//             this.on("addedfile", function(file) {
+//                 console.log(file);
 
-                if(file.type.includes('image')){
-                    EXIF.getData(file, function() {
-                        var date = EXIF.getTag(this, 'DateTimeOriginal');
-                        var make = EXIF.getTag(this, 'Make');
-                        var model = EXIF.getTag(this, 'Model');
-                        var allMetaData = EXIF.getAllTags(this);
-                        var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-                        //console.log(allMetaData);
+//                 if(file.type.includes('image')){
+//                     EXIF.getData(file, function() {
+//                         var date = EXIF.getTag(this, 'DateTimeOriginal');
+//                         var make = EXIF.getTag(this, 'Make');
+//                         var model = EXIF.getTag(this, 'Model');
+//                         var allMetaData = EXIF.getAllTags(this);
 
-                        $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
-                        $(file.previewElement).find('.make-model').text(make+' ('+model+')');
-                    });
-                }
+//                         $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
+//                         $(file.previewElement).find('.make-model').text(make+' ('+model+')');
+//                     });
+//                 }
 
-                var preview = $(file.previewElement);
-                preview.attr('data-index', i++);
+//                 var preview = $(file.previewElement);
+//                 preview.attr('data-index', i++);
 
-            });
-            this.on("success", function(file, response) {
-                console.log(response);
-                // s3bucket = '//s3-eu-west-1.amazonaws.com/images.album.mindelis.com/';
-                // indx = $(file.previewElement).attr('data-index');
-                // w  = indx - 1;
-                // type = file.type.includes('image') ? 'image' : 'video';
-                // field.append('<input name="img_url[]" data-type="'+type+'" data-filename="'+response.new_filename+'" data-index="'+indx+'" data-weight="'+w+'" class="img_url img_weight" value="'+response.location+'">');
-                // if(type == 'video'){
-                //     var videoPath = s3bucket+response.location;
-                //     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-                //     $(file.previewElement).find('.preview').append(video);
-                //     $(file.previewElement).addClass('video-preview-item');
-                // }
-                // $(file.previewElement).find('.progress-wrapper').hide();
-                // $(file.previewElement).find('.file-status').show();
-            });
-            this.on("removedfile", function(file) {
-                indx = $(file.previewElement).attr('data-index');
-                $('.img_url[data-index="'+indx+'"]').remove();
-            });
-            this.on("error", function(file, message) { 
-              console.log(message);
-            });
+//             });
+//             this.on("success", function(file, response) {
+//                 console.log(response);
+//                 s3bucket = '//s3-eu-west-1.amazonaws.com/images.album.mindelis.com/';
+//                 indx = $(file.previewElement).attr('data-index');
+//                 w  = indx - 1;
+//                 type = file.type.includes('image') ? 'image' : 'video';
+//                 field.append('<input name="file_url[]" data-type="'+type+'" data-filename="'+response.new_filename+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.location+'">');
+//                 if(type == 'video'){
+//                     var videoPath = s3bucket+response.location;
+//                     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+//                     $(file.previewElement).find('.preview').append(video);
+//                     $(file.previewElement).addClass('video-preview-item');
+//                 }
+//                 $(file.previewElement).find('.progress-wrapper').hide();
+//                 $(file.previewElement).find('.file-status').show();
+//             });
+//             this.on("removedfile", function(file) {
+//                 indx = $(file.previewElement).attr('data-index');
+//                 $('.file_url[data-index="'+indx+'"]').remove();
+//             });
+//             this.on("error", function(file, message) { 
+//               console.log(message);
+//             });
 
-        },
-        url: "/api/upload",
-        thumbnailWidth: 320,
-        thumbnailHeight: 210,
-        parallelUploads: 1,
-        acceptedFiles: ".jpg,.jpeg,.png,.gif,.mp4,.mpg,.mkv,.avi",
-        previewTemplate: $('#template').html(),
-        headers: { 'Accept': "*/*" },
-        previewsContainer: "#previews",
-        clickable: ".fileinput-button"
-    });
+//         },
+//         url: "/api/upload",
+//         thumbnailWidth: 320,
+//         thumbnailHeight: 210,
+//         parallelUploads: 1,
+//         acceptedFiles: ".jpg,.jpeg,.png,.gif,.mp4,.mpg,.mkv,.avi",
+//         previewTemplate: $('#template').html(),
+//         headers: { 'Accept': "*/*" },
+//         previewsContainer: "#previews",
+//         clickable: ".fileinput-button"
+//     });
 
-    $('.remove-media-file').click(function(){
-        index = $(this).attr('data-index');
-        $('.img_url_db[data-index="'+index+'"]').addClass('file_remove');
-        $(this).closest('.list-group-item').remove();
-    });
-};
+//     $('.remove-media-file').click(function(){
+//         index = $(this).attr('data-index');
+//         $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
+//         $(this).closest('.list-group-item').remove();
+//     });
+// };
 
 // Photobum.initMap = function() {
 //     if($('#album_map').length){

@@ -3,6 +3,8 @@ const validator = require('validator');
 const moment = require('moment');
 const connection = require('../config/db');
 
+//const AWS = require('aws-sdk');
+
 // Gets users list
 exports.list = function(req, res){
    connection.query('SELECT * FROM albums',function(err,rows)     {
@@ -65,36 +67,53 @@ exports.save = function(req, res){
 
     //req.getConnection(function (err, connection) {
 
-    let data = {
+    let albumData = {
         name : input.name,
         start_date : input.start_date,
         end_date : input.end_date,
         body : input.body
     };
 
-    // res.send(JSON.stringify(data));
+    // res.send(JSON.stringify(albumMedia));
     // return false;
     if (albumId) {
       //res.send(JSON.stringify(data));
-      delete data.author;
-      delete data.password;
-      connection.query('UPDATE users set ? WHERE id = ?', [data, albumId], function(err,rows)     {
+      delete albumData.author;
+      delete albumData.password;
+      connection.query('UPDATE users set ? WHERE id = ?', [albumData, albumId], function(err,rows)     {
               
-          if(err)
-            console.log('Error saving user : %s ',err );
-
-          res.send(JSON.stringify({ack:'ok'}));
-          return false;
+          if(err) {
+            res.send(JSON.stringify({ack:'err', msg: err.code}));
+            return false;
+          } else {
+            res.send(JSON.stringify({ack:'ok'}));
+            return false;
+          }
                              
         });
     } else {
-      connection.query('INSERT INTO albums set ? ',data, function(err,rows)     {
-              
-          if(err)
-            console.log('Error saving user : %s ',err );
 
-          res.send(JSON.stringify({ack:'ok'}));
-          return false;
+      // Insert album data
+      connection.query('INSERT INTO albums set ? ',albumData, function(err,rows)     {
+              
+          if(err) {
+            res.send(JSON.stringify({ack:'err', msg: err.code}));
+            return false;
+          } else {
+
+            // insert media
+            if (input.media) {    
+              let albumMedia = {
+                  media: input.media_files
+              };
+              res.send(JSON.stringify(input.media));
+              return false;
+            }
+
+
+            res.send(JSON.stringify({ack:'ok'}));
+            return false;
+          }
                              
         });
     }
