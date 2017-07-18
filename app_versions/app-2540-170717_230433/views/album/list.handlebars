@@ -1,0 +1,11 @@
+{{> general/title}}
+
+<a href="/album/add">Add album</a>
+
+{{message}}
+
+{{# each albums}}
+<a href="/album/edit/{{id}}">edit</a>
+  {{name}}
+
+{{/each}}

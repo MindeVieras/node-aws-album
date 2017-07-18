@@ -1,0 +1,11 @@
+{{> general/title}}
+
+<a href="/user/add">Add user</a>
+
+{{message}}
+
+{{# each users}}
+<a href="/user/edit/{{id}}">edit</a>
+  {{username}}
+
+{{/each}}

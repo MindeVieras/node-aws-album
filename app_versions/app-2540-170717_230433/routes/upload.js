@@ -1,5 +1,4 @@
 
-const path =require('path');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -11,16 +10,12 @@ const s3 = new AWS.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    acl: 'public-read',
     bucket: 'media.album.mindelis.com',
     metadata: function (req, file, cb) {
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
-      // get file extention
-      rand = Math.floor((Math.random() * 9999999) + 1);
-      ext = path.extname(file.originalname);
-      cb(null, Date.now().toString()+'-'+rand+ext.toLowerCase());
+      cb(null, Date.now().toString())
     }
   })
 
@@ -32,11 +27,7 @@ module.exports = function(app, passport) {
 
   app.post('/upload-album-media', upload.single('file'), function( req, res, next ) {
     //console.log(req.file);
-    let responseFile = {
-      key: req.file.key
-    };
 
-    // return res.status(200).send(responseFile);
     return res.status(200).send(req.file);
   });
 

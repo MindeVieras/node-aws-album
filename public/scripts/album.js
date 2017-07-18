@@ -81,12 +81,12 @@ Album.initDropzone = function() {
                 if(file.type.includes('image')){
                     EXIF.getData(file, function() {
                         var date = EXIF.getTag(this, 'DateTimeOriginal');
-                        var make = EXIF.getTag(this, 'Make');
-                        var model = EXIF.getTag(this, 'Model');
-                        var allMetaData = EXIF.getAllTags(this);
+                        //var make = EXIF.getTag(this, 'Make');
+                        //var model = EXIF.getTag(this, 'Model');
+                        //var allMetaData = EXIF.getAllTags(this);
 
                         $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
-                        $(file.previewElement).find('.make-model').text(make+' ('+model+')');
+                        //$(file.previewElement).find('.make-model').text(make+' ('+model+')');
                     });
                 }
 
@@ -100,7 +100,7 @@ Album.initDropzone = function() {
                 indx = $(file.previewElement).attr('data-index');
                 w  = indx - 1;
                 type = file.type.includes('image') ? 'image' : 'video';
-                field.append('<input name="file_url[]" data-type="'+type+'" data-filename="'+response.new_filename+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.path+'">');
+                field.append('<input name="file_url[]" data-type="'+type+'" data-filesize="'+file.size+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.key+'">');
                 if(type == 'video'){
                     var videoPath = s3bucket+response.location;
                     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
