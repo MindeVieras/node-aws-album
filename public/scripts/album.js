@@ -96,17 +96,38 @@ Album.initDropzone = function() {
             });
             this.on("success", function(file, response) {
                 console.log(response);
-                s3bucket = '//s3-eu-west-1.amazonaws.com/images.album.mindelis.com/';
-                indx = $(file.previewElement).attr('data-index');
-                w  = indx - 1;
-                type = file.type.includes('image') ? 'image' : 'video';
-                field.append('<input name="file_url[]" data-type="'+type+'" data-filesize="'+file.size+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.key+'">');
-                if(type == 'video'){
-                    var videoPath = s3bucket+response.location;
-                    var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-                    $(file.previewElement).find('.preview').append(video);
-                    $(file.previewElement).addClass('video-preview-item');
-                }
+                // type = file.type.includes('image') ? 'image' : 'video';
+                // if(type == 'image'){
+                  
+                  var fileData = {
+                    key: response.key,
+                    org_filename: response.originalname,
+                    filesize: response.size,
+                    mime: response.mimetype
+                  }
+
+                  $.ajax({
+                    type: "POST",
+                    data: fileData,
+                    url: '/api/save-media',
+                    dataType: "json",
+                    success: function (res) {
+                      console.log(res);
+                      if (res.ack == 'err') { console.log(res.msg); }
+                      else {
+                        inp = '<input name="file_url" class="file_url" value="'+res.id+'">'
+                        field.append(inp);
+                      }
+                    }
+                  });
+
+               // }
+                // if(type == 'video'){
+                //     var videoPath = s3bucket+response.location;
+                //     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+                //     $(file.previewElement).find('.preview').append(video);
+                //     $(file.previewElement).addClass('video-preview-item');
+                // }
                 $(file.previewElement).find('.progress-wrapper').hide();
                 $(file.previewElement).find('.file-status').show();
             });

@@ -4,11 +4,16 @@ var AWS = require("aws-sdk");
 var fs = require("fs");
 var mktemp = require("mktemp");
 
-exports.handle = function(e, ctx, cb) {
+var ExifImage = require('exif').ExifImage;
 
-  console.log(AWS);
-  console.log('object source key: %j', e.key);
-  cb(null, { hello: 'world' });
+var s3 = new AWS.S3();
+
+exports.handle = function(e, ctx, cb) {
+  var bucket = 'media.album.mindelis.com';
+  var srcKey = e['srcKey'];
+  //console.log(AWS);
+  //console.log('object source key: %j', e.key);
+  //cb(null, { hello: 'world' });
 
   async.waterfall([
 
@@ -20,59 +25,73 @@ exports.handle = function(e, ctx, cb) {
         }, next);
     },
 
-    function createThumbnail(response, next) {
-      var temp_file, image;
-
-      if(fileType === "pdf") {
-        temp_file = mktemp.createFileSync("/tmp/XXXXXXXXXX.pdf")
-        fs.writeFileSync(temp_file, response.Body);
-        image = gm(temp_file + "[0]");
-      } else if (fileType === 'gif') {
-        temp_file = mktemp.createFileSync("/tmp/XXXXXXXXXX.gif")
-        fs.writeFileSync(temp_file, response.Body);
-        image = gm(temp_file + "[0]");
-      } else {
-        image = gm(response.Body);
+    function getMetadata(response, next) {
+      
+      try {
+        new ExifImage(response.Body, function (error, exifData) {
+          if (error)
+            console.log('Error: '+error.message);
+          else
+            console.log(exifData);
+            cb(null, exifData);
+        });
+      } catch (error) {
+        console.log('Error: ' + error.message);
       }
 
-      image.size(function(err, size) {
-        /*
-         * scalingFactor should be calculated to fit either the width or the height
-         * within 150x150 optimally, keeping the aspect ratio. Additionally, if the image 
-         * is smaller than 150px in both dimensions, keep the original image size and just 
-         * convert to png for the thumbnail's display
-         */
-        var scalingFactor = Math.min(1, THUMB_WIDTH / size.width, THUMB_HEIGHT / size.height),
-        width = scalingFactor * size.width,
-        height = scalingFactor * size.height;
 
-        this.resize(width, height)
-        .toBuffer("jpg", function(err, buffer) {
-          if(temp_file) {
-            fs.unlinkSync(temp_file);
-          }
+      // var temp_file, image;
 
-          if (err) {
-            next(err);
-          } else {
-            next(null, response.contentType, buffer);
-          }
-        });
-      });
+      // if(fileType === "pdf") {
+      //   temp_file = mktemp.createFileSync("/tmp/XXXXXXXXXX.pdf")
+      //   fs.writeFileSync(temp_file, response.Body);
+      //   image = gm(temp_file + "[0]");
+      // } else if (fileType === 'gif') {
+      //   temp_file = mktemp.createFileSync("/tmp/XXXXXXXXXX.gif")
+      //   fs.writeFileSync(temp_file, response.Body);
+      //   image = gm(temp_file + "[0]");
+      // } else {
+      //   image = gm(response.Body);
+      // }
+
+      // image.size(function(err, size) {
+        
+      //    * scalingFactor should be calculated to fit either the width or the height
+      //    * within 150x150 optimally, keeping the aspect ratio. Additionally, if the image 
+      //    * is smaller than 150px in both dimensions, keep the original image size and just 
+      //    * convert to png for the thumbnail's display
+         
+      //   var scalingFactor = Math.min(1, THUMB_WIDTH / size.width, THUMB_HEIGHT / size.height),
+      //   width = scalingFactor * size.width,
+      //   height = scalingFactor * size.height;
+
+      //   this.resize(width, height)
+      //   .toBuffer("jpg", function(err, buffer) {
+      //     if(temp_file) {
+      //       fs.unlinkSync(temp_file);
+      //     }
+
+      //     if (err) {
+      //       next(err);
+      //     } else {
+      //       next(null, response.contentType, buffer);
+      //     }
+      //   });
+      // });
     },
 
-    function uploadThumbnail(contentType, data, next) {
-      s3.putObject({
-        Bucket: bucket,
-        Key: dstKey,
-        Body: data,
-        ContentType: "image/jpg",
-        ACL: 'public-read',
-        Metadata: {
-          thumbnail: 'TRUE'
-        }
-      }, next);
-    }
+    // function uploadThumbnail(contentType, data, next) {
+    //   s3.putObject({
+    //     Bucket: bucket,
+    //     Key: dstKey,
+    //     Body: data,
+    //     ContentType: "image/jpg",
+    //     ACL: 'public-read',
+    //     Metadata: {
+    //       thumbnail: 'TRUE'
+    //     }
+    //   }, next);
+    // }
 
   ], function(err) {
       if (err) {

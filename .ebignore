@@ -6,7 +6,8 @@ bower_components
 public/scripts
 public/sass
 
-uploads
+/uploads
+/lambda
 
 .gitignore
 bower.json

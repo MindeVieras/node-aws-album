@@ -20,7 +20,7 @@ const upload = multer({
       // get file extention
       rand = Math.floor((Math.random() * 9999999) + 1);
       ext = path.extname(file.originalname);
-      cb(null, Date.now().toString()+'-'+rand+ext.toLowerCase());
+      cb(null, 'media/'+Date.now().toString()+'-'+rand+ext.toLowerCase());
     }
   })
 
