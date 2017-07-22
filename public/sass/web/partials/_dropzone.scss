@@ -30,13 +30,16 @@
     padding: 0 5px;
     background: rgba(0, 0, 0, 0.5);
   }
-  .file-status{
+  .status-s3{
     position: absolute;
     left: 10px;
     bottom: 5px;
     color: $green;
     background: rgba(255,255,255,0.5);
     padding: 0 5px;
+    &.error {
+      color: red;
+    }
   }
   .remove-file{
     position: absolute;
@@ -44,7 +47,7 @@
     right: 5px;
   }
   .video-preview-item{
-    .file-status{
+    .status-s3{
       bottom: 38px;
     }
   }

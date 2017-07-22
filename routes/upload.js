@@ -30,7 +30,7 @@ const upload = multer({
 
 module.exports = function(app, passport) {
 
-  app.post('/upload-album-media', upload.single('file'), function( req, res, next ) {
+  app.post('/upload-media', upload.single('file'), function( req, res, next ) {
     //console.log(req.file);
     let responseFile = {
       key: req.file.key

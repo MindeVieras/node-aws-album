@@ -76,7 +76,7 @@ Album.initDropzone = function() {
 
             i = 1;
             this.on("addedfile", function(file) {
-                console.log(file);
+                //console.log(file);
 
                 if(file.type.includes('image')){
                     EXIF.getData(file, function() {
@@ -95,52 +95,57 @@ Album.initDropzone = function() {
 
             });
             this.on("success", function(file, response) {
-                console.log(response);
-                // type = file.type.includes('image') ? 'image' : 'video';
-                // if(type == 'image'){
-                  
-                  var fileData = {
-                    key: response.key,
+
+                // Data from S3 upload
+                var fileData = {
+                    key: response.key, // S3 key
                     org_filename: response.originalname,
                     filesize: response.size,
-                    mime: response.mimetype
-                  }
+                    mime: response.mimetype,
+                    content_type : 3, // Album
+                    status : 0, // Non Active
+                }
 
-                  $.ajax({
-                    type: "POST",
-                    data: fileData,
-                    url: '/api/save-media',
-                    dataType: "json",
-                    success: function (res) {
-                      console.log(res);
-                      if (res.ack == 'err') { console.log(res.msg); }
-                      else {
-                        inp = '<input name="file_url" class="file_url" value="'+res.id+'">'
-                        field.append(inp);
-                      }
+                // Save Media file
+                Album.saveMedia(fileData).done(function(res) {
+                    // After success saving to S3
+                    $(file.previewElement).find('.status-s3').show().addClass('success');
+                    inp = '<input name="file_url" class="file_url" value="'+res.msg+'">';
+                    field.append(inp);
+
+                    type = file.type.includes('image') ? 'image' : 'video';
+                    
+                    // Run other processes if image
+                    if(type == 'image'){
+                        
+                        console.log('image');
                     }
-                  });
 
-               // }
-                // if(type == 'video'){
-                //     var videoPath = s3bucket+response.location;
-                //     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-                //     $(file.previewElement).find('.preview').append(video);
-                //     $(file.previewElement).addClass('video-preview-item');
-                // }
+                    if(type == 'video'){
+                        // var videoPath = s3bucket+response.location;
+                        // var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+                        // $(file.previewElement).find('.preview').append(video);
+                        // $(file.previewElement).addClass('video-preview-item');
+                    }
+
+                }).fail(function(err) {
+                    $(file.previewElement).find('.status-s3').show().addClass('error');
+                    console.log(err);
+                });
+
                 $(file.previewElement).find('.progress-wrapper').hide();
-                $(file.previewElement).find('.file-status').show();
+
             });
             this.on("removedfile", function(file) {
                 indx = $(file.previewElement).attr('data-index');
                 $('.file_url[data-index="'+indx+'"]').remove();
             });
-            this.on("error", function(file, message) { 
-              console.log(message);
+            this.on("error", function(file, err) { 
+              console.log(err);
             });
 
         },
-        url: "/upload-album-media",
+        url: "/upload-media",
         thumbnailWidth: 320,
         thumbnailHeight: 210,
         parallelUploads: 1,
