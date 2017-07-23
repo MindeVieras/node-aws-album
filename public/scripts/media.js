@@ -22,23 +22,19 @@ Album.saveMedia = function(fileData) {
 
 }
 
-Album.saveExif = function(exifData) {
+Album.saveExif = function(id, key) {
     
     // // Data for POST
+    // id: Media ID
     // key: S3 key
-    // org_filename: Original filename
-    // filesize: Filesize in bytes
-    // mime: File mime type
-    // content_type: Content Type ID
-    // status: 0=non-active, 1=active, 2=bin
 
     // // Return JSON object
     // ack: Status "ok", "err"
-    // msg: Media ID if ack = ok
+    // msg: Metadata JSON or null
 
     return $.ajax({
                 type: "POST",
-                data: exifData,
+                data: {id: id, key: key},
                 url: '/api/media/save-exif',
                 dataType: "json"
             });

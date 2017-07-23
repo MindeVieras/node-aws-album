@@ -109,26 +109,45 @@ Album.initDropzone = function() {
                 // Save Media file
                 Album.saveMedia(fileData).done(function(res) {
                     // After success saving to S3
-                    $(file.previewElement).find('.status-s3').show().addClass('success');
-                    inp = '<input name="file_url" class="file_url" value="'+res.msg+'">';
-                    field.append(inp);
+                    if (res.ack == 'ok') {
 
-                    type = file.type.includes('image') ? 'image' : 'video';
-                    
-                    // Run other processes if image
-                    if(type == 'image'){
+                        $(file.previewElement).find('.status-s3').show().addClass('success');
+                        inp = '<input name="file_url" class="file_url" value="'+res.id+'">';
+                        field.append(inp);
+
+                        type = file.type.includes('image') ? 'image' : 'video';
                         
-                        console.log('image');
+                        // Run other processes if image
+                        if(type == 'image'){
+
+                            // Save image exif metadata
+                            Album.saveExif(res.id, response.key).done(function(res) {
+                                if (res.ack == 'ok') {
+                                    $(file.previewElement).find('.status-exif').show().addClass('success');
+                                } else {
+                                    $(file.previewElement).find('.status-exif').show().addClass('error');
+                                }
+
+                            }).fail(function() {
+                                $(file.previewElement).find('.status-exif').show().addClass('error');
+                                console.log(err);
+                            });
+                            console.log('image');
+                        }
+
+                        if(type == 'video'){
+                            // var videoPath = s3bucket+response.location;
+                            // var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+                            // $(file.previewElement).find('.preview').append(video);
+                            // $(file.previewElement).addClass('video-preview-item');
+                        }
+
+                    } else {
+                        console.log(res.msg);
+                        $(file.previewElement).find('.status-s3').show().addClass('error');
                     }
 
-                    if(type == 'video'){
-                        // var videoPath = s3bucket+response.location;
-                        // var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-                        // $(file.previewElement).find('.preview').append(video);
-                        // $(file.previewElement).addClass('video-preview-item');
-                    }
-
-                }).fail(function(err) {
+                }).fail(function() {
                     $(file.previewElement).find('.status-s3').show().addClass('error');
                     console.log(err);
                 });
