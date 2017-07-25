@@ -76,17 +76,12 @@ Album.initDropzone = function() {
 
             i = 1;
             this.on("addedfile", function(file) {
-                //console.log(file);
 
                 if(file.type.includes('image')){
                     EXIF.getData(file, function() {
                         var date = EXIF.getTag(this, 'DateTimeOriginal');
-                        //var make = EXIF.getTag(this, 'Make');
-                        //var model = EXIF.getTag(this, 'Model');
-                        //var allMetaData = EXIF.getAllTags(this);
 
                         $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
-                        //$(file.previewElement).find('.make-model').text(make+' ('+model+')');
                     });
                 }
 
@@ -127,11 +122,24 @@ Album.initDropzone = function() {
                                 } else {
                                     $(file.previewElement).find('.status-exif').show().addClass('error');
                                 }
-
                             }).fail(function() {
                                 $(file.previewElement).find('.status-exif').show().addClass('error');
                                 console.log(err);
                             });
+
+                            // Generate thumbs
+                            Album.generateThumb(response.key).done(function(res) {
+                                console.log(res);
+                                if (res.ack == 'ok') {
+                                    $(file.previewElement).find('.status-thumb').show().addClass('success');
+                                } else {
+                                    $(file.previewElement).find('.status-thumb').show().addClass('error');
+                                }
+                            }).fail(function() {
+                                $(file.previewElement).find('.status-thumb').show().addClass('error');
+                                console.log(err);
+                            });
+
                             console.log('image');
                         }
 

@@ -1,6 +1,7 @@
 
 const connection = require('../../config/db');
 const getImageMeta = require('./get_image_metadata');
+const generateThumb = require('./generate_thumb');
 
 // Save media in DB
 exports.save = function(req, res){
@@ -22,7 +23,6 @@ exports.save = function(req, res){
           return res.send(JSON.stringify({ack: 'ok', id: rows.insertId}));
           
     });
-  
 };
 
 // Get image metadata from lambda and save to DB
@@ -57,9 +57,16 @@ exports.saveExif = function(req, res){
         } else {
             return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
         }
-
     });
-  
 };
 
+exports.generateThumb = function(req, res){
+    // console.log(req);
+    // console.log(res);
 
+    var key = req.body.key;
+    generateThumb.generate(key, function(err, response){
+        return res.send({ack: 'ok', msg: response});
+    });
+    //console.log(key);
+}

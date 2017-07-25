@@ -3,9 +3,9 @@ const mediaSave = require('../models/media/save');
 
 module.exports = function(app, passport) {
 
-  // app.post('/api/get-image-exif', api.get_image_exif);
   app.post('/api/media/save', mediaSave.save);
   app.post('/api/media/save-exif', mediaSave.saveExif);
+  app.post('/api/media/generate-thumb', mediaSave.generateThumb);
   // app.get('/user/edit/:id', isAdmin, user_model.edit);
   // app.post('/user/add', isAdmin, user_model.save);
 
