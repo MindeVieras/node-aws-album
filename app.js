@@ -24,10 +24,10 @@ require('./config/passport')(passport); // pass passport for configuration
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  limit: '50mb'
 }));
-app.use(bodyParser.json());
-
+app.use(bodyParser.json({limit: '50mb'}));
 // Create `ExpressHandlebars` instance with a default layout.
 const hbs = exphbs.create({
     defaultLayout: 'main',
