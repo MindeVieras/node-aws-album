@@ -9,7 +9,8 @@ const connection = mysql.createConnection({
   host: host,
   user: user,
   password : pass,
-  database: name
+  database: name,
+  acquireTimeout: 1000000
 });
 
 connection.connect(function(err) {
