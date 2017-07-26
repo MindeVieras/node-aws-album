@@ -35,21 +35,21 @@ exports.edit = function(req, res){
 
     let id = req.params.id;
 
-    connection.query('SELECT * FROM users WHERE id = ?',[id],function(err,rows)
+    connection.query('SELECT * FROM albums WHERE id = ?',[id],function(err,rows)
       {
             
         if(err)
             console.log("Error Selecting : %s ",err );
- 
-        res.render('user/edit', {
-          title: 'Edit user',
+        console.log(rows[0]);
+        res.render('album/edit', {
+          title: 'Edit album',
           user: req.user,
-          saved_user: rows[0] 
+          saved_album: rows[0] 
         });            
     });
 };
 
-// Saves user
+// Saves album
 exports.save = function(req, res){
     
     let input = JSON.parse(JSON.stringify(req.body));
@@ -74,77 +74,41 @@ exports.save = function(req, res){
         body : input.body
     };
 
-    // res.send(JSON.stringify(albumMedia));
-    // return false;
+    //return res.send(JSON.stringify(albumMedia));
     if (albumId) {
-      //res.send(JSON.stringify(data));
-      delete albumData.author;
-      delete albumData.password;
-      connection.query('UPDATE users set ? WHERE id = ?', [albumData, albumId], function(err,rows)     {
+
+      connection.query('UPDATE albums set ? WHERE id = ?', [albumData, albumId], function(err,rows)     {
               
           if(err) {
-            res.send(JSON.stringify({ack:'err', msg: err.code}));
-            return false;
+            return res.send(JSON.stringify({ack:'err', msg: err.code}));
           } else {
-            res.send(JSON.stringify({ack:'ok'}));
-            return false;
+            return res.send(JSON.stringify({ack:'ok', msg: rows[0]}));
           }
                              
         });
     } else {
 
-      // Insert album data
-      connection.query('INSERT INTO albums set ? ',albumData, function(err,rows)     {
-              
-          if(err) {
-            res.send(JSON.stringify({ack:'err', msg: err.code}));
-            return false;
-          } else {
+        // Insert album data
+        connection.query('INSERT INTO albums set ? ', albumData, function(err,rows)     {
+                
+            if(err) {
+              return res.send(JSON.stringify({ack:'err', msg: err.code}));
+            } else {
 
-            // insert media
-            if (input.media) {    
-              let albumMedia = {
-                  media: input.media_files
-              };
-              res.send(JSON.stringify(input.media));
+              // insert media
+              if (input.media) {    
+                let albumMedia = {
+                    media: input.media_files
+                };
+                res.send(JSON.stringify(input.media));
+                return false;
+              }
+
+
+              res.send(JSON.stringify({ack:'ok'}));
               return false;
             }
-
-
-            res.send(JSON.stringify({ack:'ok'}));
-            return false;
-          }
-                             
+                               
         });
     }
 };
-
-// module.exports.getUserByUsername = function(username, callback){
-//  var query = {username: username};
-//  User.findOne(query, callback);
-// }
-
-// module.exports.createUser = function(newUser, callback){
-//  bcrypt.genSalt(10, function(err, salt) {
-//      bcrypt.hash(newUser.password, salt, function(err, hash) {
-//          newUser.password = hash;
-//          newUser.save(callback);
-//      });
-//  });
-// }
-
-// module.exports.getUserByUsername = function(username, callback){
-//  var query = {username: username};
-//  User.findOne(query, callback);
-// }
-
-// module.exports.getUserById = function(id, callback){
-//  User.findById(id, callback);
-// }
-
-// module.exports.comparePassword = function(candidatePassword, hash, callback){
-//  bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-//      if(err) throw err;
-//      callback(null, isMatch);
-//  });
-// }
