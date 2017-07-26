@@ -61,7 +61,7 @@ exports.handle = function(event, context, callback) {
                     var width   = scalingFactor * size.width;
                     var height = scalingFactor * size.height;
 
-                    self.quality(100).resize(width, height).toBuffer(imageType, function(err, buffer) {
+                    self.quality(80).resize(width, height).toBuffer(imageType, function(err, buffer) {
                         if (err) next(err);
                         else {
                             buffers.push(buffer);
