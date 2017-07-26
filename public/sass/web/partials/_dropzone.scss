@@ -52,6 +52,17 @@
       color: red;
     }
   }
+  .status-thumb{
+    position: absolute;
+    left: 70px;
+    bottom: 5px;
+    color: $green;
+    background: rgba(255,255,255,0.5);
+    padding: 0 5px;
+    &.error {
+      color: red;
+    }
+  }
   .remove-file{
     position: absolute;
     top: 5px;
