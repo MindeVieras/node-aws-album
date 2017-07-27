@@ -18,8 +18,8 @@
         {{current_date}}
         <div class="form-group">
             <label for="start_date">Start Date</label>
-            <div class="input-group">
-                <input type="text" id="start_date" class="form-control" />
+            <div class="input-group date" id="start_date">
+                <input type="text" class="form-control" />
                 <span class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </span>
@@ -28,8 +28,8 @@
 
         <div class="form-group">
             <label for="end_date">End Date</label>
-            <div class="input-group">
-                <input type="text" id="end_date" class="form-control" />
+            <div class="input-group date" id="end_date">
+                <input type="text" class="form-control" />
                 <span class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </span>
@@ -108,6 +108,7 @@
     </form>
 
     <script>
+      Album.addAlbumDP();
       Album.addAlbum();
       Album.initDropzone();
     </script>

@@ -1,27 +1,5 @@
+
 Album.addAlbum = function() {
-  
-  // Start Datepicker
-  $('#add_album #start_date').datetimepicker({
-          format: 'DD-MM-YYYY, HH:mm:ss',
-          date: moment()
-      }
-  );
-  $('#add_album #start_date').on('dp.change', function (e) {
-      $('#add_album #end_date').data("DateTimePicker").minDate(e.date);
-  });
-
-  // End Datepicker
-  $('#add_album #end_date').datetimepicker({
-          format: 'DD-MM-YYYY, HH:mm:ss',
-          date: moment(),
-          useCurrent: false
-      }
-  );
-
-  $("#add_album #end_date").on("dp.change", function (e) {
-      $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
-  });
-
 
   $('#add_album').validate({
       rules: {
@@ -61,6 +39,54 @@ Album.addAlbum = function() {
         });
         return false;
       }
+  });
+}
+
+Album.addAlbumDP = function() {
+  // Start Datepicker
+  $('#add_album #start_date').datetimepicker({
+          format: 'YYYY-MM-DD, HH:mm:ss',
+          date: moment()
+      }
+  );
+  $('#add_album #start_date').on('dp.change', function (e) {
+      $('#add_album #end_date').data("DateTimePicker").minDate(e.date);
+  });
+
+  // End Datepicker
+  $('#add_album #end_date').datetimepicker({
+          format: 'YYYY-DD-MM, HH:mm:ss',
+          date: moment(),
+          useCurrent: false
+      }
+  );
+
+  $("#add_album #end_date").on("dp.change", function (e) {
+      $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
+  });
+}
+
+Album.editAlbumDP = function(start, end) {
+  // Start Datepicker
+  $('#add_album #start_date').datetimepicker({
+          format: 'YYYY-MM-DD, HH:mm:ss',
+          date: start
+      }
+  );
+  $('#add_album #start_date').on('dp.change', function (e) {
+      $('#add_album #end_date').data("DateTimePicker").minDate(e.date);
+  });
+
+  // End Datepicker
+  $('#add_album #end_date').datetimepicker({
+          format: 'YYYY-MM-DD, HH:mm:ss',
+          date: end,
+          useCurrent: false
+      }
+  );
+
+  $("#add_album #end_date").on("dp.change", function (e) {
+      $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
   });
 
 }
