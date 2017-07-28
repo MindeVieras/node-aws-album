@@ -54,18 +54,13 @@ exports.save = function(req, res){
     
     let input = JSON.parse(JSON.stringify(req.body));
     let albumId = input.id;
-    //res.send(JSON.stringify({ack:'err', msg: 'Start date required'}));
-    // vlaidate form
+
     if (validator.isEmpty(input.name)) {
-        res.send(JSON.stringify({ack:'err', msg: 'Name is required'}));
-        return false;
+        return res.send(JSON.stringify({ack:'err', msg: 'Name is required'}));
     }
     if (validator.isLength(input.name, {min:0, max:2})) {
-        res.send(JSON.stringify({ack:'err', msg: 'Name must be at least 3 chars long'}));
-        return false;
+        return res.send(JSON.stringify({ack:'err', msg: 'Name must be at least 3 chars long'}));
     }
-
-    //req.getConnection(function (err, connection) {
 
     let albumData = {
         name : input.name,
@@ -74,41 +69,28 @@ exports.save = function(req, res){
         body : input.body
     };
 
-    //return res.send(JSON.stringify(albumMedia));
     if (albumId) {
 
       connection.query('UPDATE albums set ? WHERE id = ?', [albumData, albumId], function(err,rows)     {
               
-          if(err) {
+        if(err) {
             return res.send(JSON.stringify({ack:'err', msg: err.code}));
           } else {
-            return res.send(JSON.stringify({ack:'ok', msg: rows[0]}));
+            return res.send(JSON.stringify({ack:'ok', id: albumId}));
           }
                              
         });
+    
     } else {
 
-        // Insert album data
-        connection.query('INSERT INTO albums set ? ', albumData, function(err,rows)     {
-                
-            if(err) {
-              return res.send(JSON.stringify({ack:'err', msg: err.code}));
-            } else {
-
-              // insert media
-              if (input.media) {    
-                let albumMedia = {
-                    media: input.media_files
-                };
-                res.send(JSON.stringify(input.media));
-                return false;
-              }
-
-
-              res.send(JSON.stringify({ack:'ok'}));
-              return false;
-            }
-                               
-        });
+      // Insert album data
+      connection.query('INSERT INTO albums set ? ', albumData, function(err,rows)     {
+        if(err) {
+          return res.send(JSON.stringify({ack:'err', msg: err.code}));
+        } else {
+          return res.send(JSON.stringify({ack:'ok', id: rows.insertId}));
+        }
+                             
+      });
     }
 };

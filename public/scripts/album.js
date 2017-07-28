@@ -11,15 +11,7 @@ Album.addAlbum = function() {
             name: $('#add_album #name').val(),
             start_date: $('#add_album #start_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
             end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
-            body: tinyMCE.get('album_body').getContent(),        
-            media: $('#add_album .file_url').map(function(){
-                return {
-                    filename: $(this).data('filename'),
-                    weight: $(this).data('weight'),
-                    file_type: $(this).data('type'),
-                    value: $(this).val()
-                }
-            }).get(),
+            body: tinyMCE.get('album_body').getContent()
         };
         console.log(data);
         $.ajax({
@@ -30,6 +22,39 @@ Album.addAlbum = function() {
           success: function (res) {
             console.log(res);
             if (res.ack == 'ok') {
+              // Atach new media files if any
+              var mediaData = $('#add_album .file_url').map(function(){
+                return {
+                  //filename: $(this).data('filename'),
+                  //weight: $(this).data('weight'),
+                  //file_type: $(this).data('type'),
+                  media_id: $(this).val()
+                }
+              }).get();
+
+              console.log(mediaData.length);
+              if (mediaData.length > 0 && res.id > 0) {
+                
+                console.log(mediaData);
+                console.log('galima attachint');
+
+                // Attach media files to Album
+                Album.attachMedia(mediaData, res.id, 1).done(function(res) {
+                  console.log(res);
+                  // if (res.ack == 'ok') {
+                  //   $(file.previewElement).find('.status-thumb').show().addClass('success');
+                  // } else {
+                  //   $(file.previewElement).find('.status-thumb').show().addClass('error');
+                  // }
+                }).fail(function() {
+                    //$(file.previewElement).find('.status-thumb').show().addClass('error');
+                    console.log(err);
+                });
+              
+              } else {
+                console.log('negalima attachinti');
+              }
+
               //window.location.replace('/albums');
             }
             else {
@@ -41,6 +66,23 @@ Album.addAlbum = function() {
       }
   });
 }
+
+Album.attachMedia = function(mediaData, albumId, status) {
+    
+    // // Data for POST
+    // media_id: Media ID
+    // album_id: Album ID
+    // status: File status
+
+    return $.ajax({
+                type: "POST",
+                data: {media: mediaData, album_id: albumId, status: status},
+                url: '/api/media/attach',
+                dataType: "json"
+            });
+
+}
+
 
 Album.addAlbumDP = function() {
   // Start Datepicker
@@ -88,9 +130,7 @@ Album.editAlbumDP = function(start, end) {
   $("#add_album #end_date").on("dp.change", function (e) {
       $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
   });
-
 }
-
 
 Album.initDropzone = function() {
 
@@ -155,7 +195,6 @@ Album.initDropzone = function() {
 
                             // Generate thumbs
                             Album.generateThumb(response.key).done(function(res) {
-                                console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-thumb').show().addClass('success');
                                 } else {
