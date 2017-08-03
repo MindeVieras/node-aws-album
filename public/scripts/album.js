@@ -205,6 +205,19 @@ Album.initDropzone = function() {
                                 console.log(err);
                             });
 
+                            // Get and save image rekognition labels
+                            Album.rekognitionLabels(res.id, response.key).done(function(res) {
+                                //console.log(res);
+                                if (res.ack == 'ok') {
+                                    $(file.previewElement).find('.status-rekognition').show().addClass('success');
+                                } else {
+                                    $(file.previewElement).find('.status-rekognition').show().addClass('error');
+                                }
+                            }).fail(function() {
+                                $(file.previewElement).find('.status-rekognition').show().addClass('error');
+                                console.log(err);
+                            });
+
                             console.log('image');
                         }
 

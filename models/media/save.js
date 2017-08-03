@@ -2,6 +2,7 @@
 const connection = require('../../config/db');
 const getImageMeta = require('./get_image_metadata');
 const generateThumb = require('./generate_thumb');
+const getRekognitionLabels = require('./get_rekognition_labels');
 
 // Save media in DB
 exports.save = function(req, res){
@@ -71,6 +72,41 @@ exports.generateThumb = function(req, res){
     //console.log(key);
 }
 
+exports.rekognitionLabels = function(req, res){
+
+    var key = req.body.key;
+    var mediaId = req.body.id;
+
+    getRekognitionLabels.get(key, function(err, labels){
+
+        // save recognition labels to DB if any
+        var labels = labels.Labels;
+        if (labels !== null && typeof labels === 'object') {
+
+            // make meta array
+            var values = [];
+            Object.keys(labels).forEach(function (key) {
+                let obj = labels[key];
+                values.push([mediaId, obj.Name, obj.Confidence]);
+            });
+            // make DB query
+            var sql = "INSERT INTO rekognition (media_id, label, confidence) VALUES ?";
+            connection.query(sql, [values], function(err, rows) {
+                if (err) {
+                    return res.send({ack: 'err', msg: 'cant save rekognition labels'});
+                } else {
+                    return res.send({ack: 'ok', msg: 'all recognition labels saved'});
+                }
+              
+            });
+
+        } else {
+            return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
+        }
+    });
+    //console.log(key);
+}
+
 // Attach media to album
 exports.attachMedia = function(req, res){
     // console.log(req);
@@ -84,13 +120,13 @@ exports.attachMedia = function(req, res){
     var values = [];
     Object.keys(media).forEach(function(key) {
         let obj = media[key];
-        values.push([obj['media_id'], albumId, status]);
+        values.push([obj['media_id']]);
     });
     //return res.send({ack: 'ok', msg: values});
 
     // make DB query
-    var sql = "INSERT INTO media (id, type_id, status) VALUES ? ON DUPLICATE KEY UPDATE type_id = VALUES(type_id), status = VALUES(status)";
-    connection.query(sql, [values], function(err, rows) {
+    var sql = "INSERT INTO media (id) VALUES ? ON DUPLICATE KEY UPDATE type_id = ?, status = ?";
+    connection.query(sql, [values, albumId, status], function(err, rows) {
         if (err) {
             return res.send(JSON.stringify({ack: 'err', msg: 'cant attach media'}));
         } else {
@@ -99,29 +135,4 @@ exports.attachMedia = function(req, res){
       
     });
 
-            //console.log(rows);
-            //return;
-            // make media array
-            // var values = [];
-            // Object.keys(metadata).forEach(function (key) {
-            //     let obj = metadata[key];
-            //     values.push([mediaId, key, obj]);
-            // });
-
-            // // make DB query
-            // var sql = "INSERT INTO media_meta (media_id, meta_name, meta_value) VALUES ?";
-            // connection.query(sql, [values], function(err) {
-            //     if (err) {
-            //         return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
-            //     } else {
-            //         return res.send(JSON.stringify({ack: 'ok', msg: 'all meta saved'}));
-            //     }
-              
-            // });
-            // // INSERT INTO media (id, type_id, status) VALUES (1,1,1),(2,2,3),(3,9,3),(4,10,12)
-            // // ON DUPLICATE KEY UPDATE type_id = VALUES(type_id), status = VALUES(status);
-            
-            // return res.send(JSON.stringify({ack:'ok', msg: rows[0]}));
-
-    //console.log(key);
 }

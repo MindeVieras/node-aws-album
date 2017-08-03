@@ -6,6 +6,7 @@ module.exports = function(app, passport) {
   app.post('/api/media/save', mediaSave.save);
   app.post('/api/media/save-exif', mediaSave.saveExif);
   app.post('/api/media/generate-thumb', mediaSave.generateThumb);
+  app.post('/api/media/rekognition-labels', mediaSave.rekognitionLabels);
   app.post('/api/media/attach', mediaSave.attachMedia);
   // app.get('/user/edit/:id', isAdmin, user_model.edit);
   // app.post('/user/add', isAdmin, user_model.save);

@@ -46,3 +46,18 @@ Album.generateThumb = function(key) {
             });
 
 }
+
+Album.rekognitionLabels = function(id, key) {
+    
+    // // Data for POST
+    // id: Media ID
+    // key: S3 key
+
+    return $.ajax({
+                type: "POST",
+                data: {id: id, key:key},
+                url: '/api/media/rekognition-labels',
+                dataType: "json"
+            });
+
+}
