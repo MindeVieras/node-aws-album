@@ -61,17 +61,7 @@ exports.saveExif = function(req, res){
     });
 };
 
-exports.generateThumb = function(req, res){
-    // console.log(req);
-    // console.log(res);
-
-    var key = req.body.key;
-    generateThumb.generate(key, function(err, response){
-        return res.send({ack: 'ok', msg: response});
-    });
-    //console.log(key);
-}
-
+// Get and Save Image Labels from AWS rekognition
 exports.rekognitionLabels = function(req, res){
 
     var key = req.body.key;
@@ -95,7 +85,7 @@ exports.rekognitionLabels = function(req, res){
                 if (err) {
                     return res.send({ack: 'err', msg: 'cant save rekognition labels'});
                 } else {
-                    return res.send({ack: 'ok', msg: 'all recognition labels saved'});
+                    return res.send({ack: 'ok', msg: 'all rekognition labels saved'});
                 }
               
             });
@@ -105,12 +95,10 @@ exports.rekognitionLabels = function(req, res){
         }
     });
     //console.log(key);
-}
+};
 
 // Attach media to album
 exports.attachMedia = function(req, res){
-    // console.log(req);
-    // console.log(res);
 
     var albumId = req.body.album_id;
     var status = req.body.status;
@@ -134,5 +122,16 @@ exports.attachMedia = function(req, res){
         }
       
     });
+};
 
-}
+// Generate Image Thumbnails
+exports.generateThumb = function(req, res){
+    // console.log(req);
+    // console.log(res);
+
+    var key = req.body.key;
+    generateThumb.generate(key, function(err, response){
+        return res.send({ack: 'ok', msg: response});
+    });
+    //console.log(key);
+};

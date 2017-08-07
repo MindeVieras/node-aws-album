@@ -2,6 +2,7 @@
 const validator = require('validator');
 const moment = require('moment');
 const connection = require('../config/db');
+const query = require('./query');
 
 //const AWS = require('aws-sdk');
 
@@ -35,17 +36,23 @@ exports.edit = function(req, res){
 
     let id = req.params.id;
 
-    connection.query('SELECT * FROM albums WHERE id = ?',[id],function(err,rows)
-      {
+    connection.query('SELECT * FROM albums WHERE id = ?', [id], function(err,rows){
             
-        if(err)
-            console.log("Error Selecting : %s ",err );
-        console.log(rows[0]);
-        res.render('album/edit', {
-          title: 'Edit album',
-          user: req.user,
-          saved_album: rows[0] 
-        });            
+      if(err) {
+        console.log("Error Selecting : %s ",err );
+      }
+      else {
+        query.getMedia(id, function(err, media){
+          //console.log(media);
+
+          res.render('album/edit', {
+            title: 'Edit album',
+            user: req.user,
+            saved_album: rows[0],
+            media: media
+          });
+        });
+      }
     });
 };
 

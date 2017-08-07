@@ -54,10 +54,40 @@
                 Memory limit: get_ini('memory_limit')
             </small></div>
         </div> -->
-        
-        <!-- dropzone preview -->
+
+        <!-- files in db -->
         <div class="list-group files" id="previews">
+
+            {{# each media}}
+                <div class="list-group-item image-preview list-group-item-info">
+                    
+                    <span class="preview">
+                        <img class="saved-file" src="{{s3_key}}">
+                    </span>
+                    
+                    <div class="file-date-taken">{{m.date_taken}}</div>
+                    <div class="dz-size file-size" data-dz-size>1234</div>
+
+                    <div class="">
+                        <small class="album-list-name">{{m.name}}</small><br>
+                        <small class="make-model">{{m.camera}}</small>
+                        <p class="size">{{m.size}}</p>
+                    </div>
+
+                    <div class="file-status">
+                        <i class="fa fa-database"></i>
+                    </div>
+
+                    <span class="btn btn-danger btn-xs remove-media-file remove-file">
+                        <i class="fa fa-remove"></i>
+                    </span>
+
+                </div>
+            {{/each}}
+
+            <!-- dropzone preview -->
             {{> general/dropzone_album}}
+
         </div>
 
         <!-- dropzone input -->
@@ -67,7 +97,13 @@
                 <span>Add files...</span>
             </span>
         </div>
-        <div id="files_urls" class=""></div>
+        
+        <div id="files_urls" class="">
+            {{# each media}}
+                <input class="file_url_db" value="{{id}}">
+            {{/each}}
+        </div>
+
 
 <!-- 
         {# location field #}
