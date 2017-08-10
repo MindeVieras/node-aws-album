@@ -19,23 +19,19 @@
 
         <!-- start , end date fields -->
         {{current_date}}
-        <div class="form-group">
-            <label for="start_date">Start Date</label>
-            <div class="input-group date" id="start_date">
-                <input type="text" class="form-control" />
-                <span class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </span>
+        <div class="dates-wrapper">
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <div class="input-group date">
+                    <input type="text" class="form-control" id="start_date" />
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="end_date">End Date</label>
-            <div class="input-group date" id="end_date">
-                <input type="text" class="form-control" />
-                <span class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </span>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <div class="input-group date">
+                    <input type="text" class="form-control" id="end_date" />
+                </div>
             </div>
         </div>
 
@@ -61,8 +57,7 @@
             {{# each media}}
                 <div class="list-group-item image-preview list-group-item-info">
                     
-                    <span class="preview">
-                        <img class="saved-file" src="{{s3_key}}">
+                    <span class="preview" style="background-image:url({{img s3_key}})">
                     </span>
                     
                     <div class="file-date-taken">{{m.date_taken}}</div>

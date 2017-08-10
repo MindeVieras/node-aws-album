@@ -31,7 +31,10 @@ app.use(bodyParser.json({limit: '50mb'}));
 // Create `ExpressHandlebars` instance with a default layout.
 const hbs = exphbs.create({
     defaultLayout: 'main',
-    helpers: helpers,
+    //helpers: helpers,
+    helpers: {
+      img: function (key) { return '//s3-eu-west-1.amazonaws.com/media.album.mindelis.com/'+key; }
+    },
     partialsDir: [
         'views/partials/'
     ]
