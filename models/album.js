@@ -39,14 +39,14 @@ exports.edit = function(req, res){
     connection.query('SELECT * FROM albums WHERE id = ?', [id], function(err,rows){
             
       if(err) {
-        console.log("Error Selecting : %s ",err );
+        console.log("Error Selecting : %s ", err);
       }
       else {
         query.getMedia(id, function(err, media){
-          //console.log(media);
+          console.log(media);
 
           res.render('album/edit', {
-            title: 'Edit album',
+            title: 'Edit album \''+rows[0]['name']+'\'',
             user: req.user,
             saved_album: rows[0],
             media: media
@@ -91,13 +91,13 @@ exports.save = function(req, res){
     } else {
 
       // Insert album data
-      connection.query('INSERT INTO albums set ? ', albumData, function(err,rows)     {
+      connection.query('INSERT INTO albums set ? ', albumData, function(err,rows) {
         if(err) {
           return res.send(JSON.stringify({ack:'err', msg: err.code}));
         } else {
           return res.send(JSON.stringify({ack:'ok', id: rows.insertId}));
         }
-                             
+
       });
     }
 };

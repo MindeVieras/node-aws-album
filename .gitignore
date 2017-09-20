@@ -11,6 +11,7 @@ aws-keys.json
 
 *.DS_Store
 *.map
+npm-debug.log
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

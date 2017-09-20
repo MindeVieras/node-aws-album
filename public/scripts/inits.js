@@ -9,6 +9,7 @@ Album.initView = function() {
     // Photobum.initColorPickers();
     // Photobum.initSelect();
     // Photobum.initFreewall();
+    Album.initTips();
     Album.initDatepicker();
     Album.initEditors();
     //Album.initDropzone();
@@ -169,6 +170,15 @@ Album.initView = function() {
 //     albumsWall.fitWidth();
 
 // };
+
+Album.initTips = function () {
+    
+    const els = Array.from(document.querySelectorAll('.tip-default'));
+    tippy(els);
+    
+    console.log('tipsss');
+  
+};
 
 Album.initDatepicker = function () {
     

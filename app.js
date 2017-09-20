@@ -33,7 +33,10 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
     //helpers: helpers,
     helpers: {
-      img: function (key) { return '//s3-eu-west-1.amazonaws.com/media.album.mindelis.com/'+key; }
+      img: function (key, size) {
+            // console.log(size);
+            return '//s3-eu-west-1.amazonaws.com/media.album.mindelis.com/thumbs/'+size+'/'+path.basename(key);
+          }
     },
     partialsDir: [
         'views/partials/'

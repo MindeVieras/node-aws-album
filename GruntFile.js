@@ -38,6 +38,7 @@ module.exports = function(grunt) {
                     'dropzone',
                     'eonasdan-bootstrap-datetimepicker',
                     'tinymce',
+                    // 'tippyjs'
                     //'izimodal'
                     //'parsleyjs'
                 ],
@@ -51,6 +52,7 @@ module.exports = function(grunt) {
             web: {
                 files: {
                     './public/js/scripts.min.js': [
+                        './bower_components/tippyjs/dist/tippy.min.js',
                         './bower_components/tinymce/themes/modern/theme.js',
                         './public/scripts/*.js'
                     ]

@@ -57,11 +57,11 @@
             {{# each media}}
                 <div class="list-group-item image-preview list-group-item-info">
                     
-                    <span class="preview" style="background-image:url({{img s3_key}})">
+                    <span class="preview" style="background-image:url({{img s3_key 'hd'}})">
                     </span>
                     
                     <div class="file-date-taken">{{m.date_taken}}</div>
-                    <div class="dz-size file-size" data-dz-size>1234</div>
+                    <div class="file-size">{{fileSize filesize}}</div>
 
                     <div class="">
                         <small class="album-list-name">{{m.name}}</small><br>
@@ -69,11 +69,20 @@
                         <p class="size">{{m.size}}</p>
                     </div>
 
-                    <div class="file-status">
-                        <i class="fa fa-database"></i>
+                    <div class="status-s3">
+                        <i class="al-icons s3"></i>
+                    </div>
+                    <div class="status-exif">
+                        <i class="al-icons exif"></i>
+                    </div>
+                    <div class="status-thumb">
+                        <i class="al-icons thumb"></i>
+                    </div>
+                    <div class="status-rekognition">
+                        <i class="al-icons rekognition"></i>
                     </div>
 
-                    <span class="btn btn-danger btn-xs remove-media-file remove-file">
+                    <span class="btn btn-danger btn-xs remove-media-file remove-file tip-default" title="Move to trash">
                         <i class="fa fa-remove"></i>
                     </span>
 

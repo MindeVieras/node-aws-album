@@ -3,7 +3,9 @@ Album.addAlbum = function() {
 
   $('#add_album').validate({
       rules: {
-          name: {required: true}
+          name: {required: true},
+          start_date: {required: true},
+          end_date: {required: true}
       },
       submitHandler: function(form) {
         var data = {
@@ -55,7 +57,8 @@ Album.addAlbum = function() {
                 console.log('negalima attachinti');
               }
 
-              //window.location.replace('/albums');
+              // window.location.replace('/albums');
+              // window.location.reload();
             }
             else {
               $('#add_album .error-msg').text(res.msg);

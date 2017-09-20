@@ -1,11 +1,12 @@
 
-#footer-menu {
-  background-color: $blue;
-  position: absolute;
+#site-footer {
+  background-color: $grey;
+  position: fixed;
   bottom: 0;
+  left: 0;
   right: 0;
-  height: 45px;
-  width: 300px;
+  height: 35px;
+  width: 100%;
   li {
     display: inline-block;
     a {

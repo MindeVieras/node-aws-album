@@ -59,6 +59,6 @@ function convertExifDate(date){
         }
         return newDateTime;
     } else {
-        return 'not exif date';
+        return date;
     }
 };
