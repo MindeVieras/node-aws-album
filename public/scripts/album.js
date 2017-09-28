@@ -86,7 +86,7 @@ Album.attachMedia = function(mediaData, albumId, status) {
 
 }
 
-
+// Datepicker Add Album
 Album.addAlbumDP = function() {
   // Start Datepicker
   $('#add_album #start_date').datetimepicker({
@@ -111,6 +111,7 @@ Album.addAlbumDP = function() {
   });
 }
 
+// Datepicker Edit Album
 Album.editAlbumDP = function(start, end) {
   // Start Datepicker
   $('#add_album #start_date').datetimepicker({
@@ -265,9 +266,27 @@ Album.initDropzone = function() {
     });
 
     $('.remove-media-file').click(function(){
-        index = $(this).attr('data-index');
-        $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
-        $(this).closest('.list-group-item').remove();
+        var id = parseInt(this.dataset.mediaid);
+        var btn = this;
+        $.ajax({
+          type: "POST",
+          data: {id: id},
+          url: '/api/media/move-to-trash',
+          dataType: "json",
+          success: function (res) {
+            console.log(res);
+            console.log(btn);
+            if (res.ack == 'ok') {
+              index = $(btn).attr('data-index');
+              $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
+              $(btn).closest('.list-group-item').remove();
+            }
+            else {
+              $('#add_album .error-msg').text('cannot trash this file');
+            }
+          }
+        });
+        return false;
     });
 };
 

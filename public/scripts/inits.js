@@ -10,7 +10,7 @@ Album.initView = function() {
     // Photobum.initSelect();
     // Photobum.initFreewall();
     Album.initTips();
-    Album.initDatepicker();
+    // Album.initDatepicker();
     Album.initEditors();
     //Album.initDropzone();
     // Photobum.initMap();
@@ -173,42 +173,43 @@ Album.initView = function() {
 
 Album.initTips = function () {
     
-    const els = Array.from(document.querySelectorAll('.tip-default'));
-    tippy(els);
+    const tipDefault = Array.from(document.querySelectorAll('.tip-default'));
+    tippy(tipDefault);
     
     console.log('tipsss');
   
 };
 
-Album.initDatepicker = function () {
+// Album.initDatepicker = function () {
     
-    console.log('date pickers inited');
+//     console.log('date pickers inited');
 
     
-    // // Start Datepicker
-    // $('#start_date').datetimepicker({
-    //         format: 'DD-MM-YYYY, HH:mm:ss',
-    //         date: moment()
-    //     }
-    // );
+//     // // Start Datepicker
+//     // $('#start_date').datetimepicker({
+//     //         format: 'DD-MM-YYYY, HH:mm:ss',
+//     //         date: moment()
+//     //     }
+//     // );
 
-    // $('#start_date').on('dp.change', function (e) {
-    //     $('#end_date').data("DateTimePicker").minDate(e.date);
-    // });
+//     // $('#start_date').on('dp.change', function (e) {
+//     //     $('#end_date').data("DateTimePicker").minDate(e.date);
+//     // });
 
-    // // End Datepicker
-    // $('#end_date').datetimepicker({
-    //         format: 'DD-MM-YYYY, HH:mm:ss',
-    //         date: moment(),
-    //         useCurrent: false
-    //     }
-    // );
+//     // // End Datepicker
+//     // $('#end_date').datetimepicker({
+//     //         format: 'DD-MM-YYYY, HH:mm:ss',
+//     //         date: moment(),
+//     //         useCurrent: false
+//     //     }
+//     // );
 
-    // $("#end_date").on("dp.change", function (e) {
-    //     $('#start_date').data("DateTimePicker").maxDate(e.date);
-    // });
-};
+//     // $("#end_date").on("dp.change", function (e) {
+//     //     $('#start_date').data("DateTimePicker").maxDate(e.date);
+//     // });
+// };
 
+// Tinymce editors
 Album.initEditors = function() {
     tinymce.remove();
 

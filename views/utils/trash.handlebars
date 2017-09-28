@@ -1,0 +1,26 @@
+{{> general/title}}
+
+<div class="trash-wrapper">
+{{# each media}}
+  <div class="trash-item">
+    <div class="image-wrapper">
+      <img src="{{img s3_key 'icon'}}" />
+    </div>
+    
+    <div class="info-wrapper">
+      {{fileSize filesize}}
+    </div>
+
+    <span class="btn btn-success btn-xs remove-media-file tip-default" title="Restore file" data-function="Album.trashRecover" data-mediaid={{id}}>
+        <i class="fa fa-reply"></i>
+    </span>
+
+    <span class="btn btn-danger btn-xs remove-media-file tip-default" title="Delete permanently" data-function="Album.trashHardDelete" data-mediaid={{id}}>
+        <i class="fa fa-remove"></i>
+    </span>
+  
+  </div>
+
+{{/each}}
+
+</div>

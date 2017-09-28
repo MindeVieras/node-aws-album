@@ -13,6 +13,8 @@
 @import 'partials/inputs';
 @import 'partials/buttons';
 @import 'partials/tooltips';
+@import 'partials/trash';
+@import 'partials/messages';
 @import 'partials/footer';
 
 body {
@@ -45,6 +47,7 @@ ul {
 
 #site-content {
   padding: 50px 10px 35px 10px;
+  overflow: hidden;
 }
 
 

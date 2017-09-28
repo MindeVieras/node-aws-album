@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     'eonasdan-bootstrap-datetimepicker',
                     'tinymce',
                     // 'tippyjs'
-                    //'izimodal'
+                    'izitoast'
                     //'parsleyjs'
                 ],
                 dependencies: {

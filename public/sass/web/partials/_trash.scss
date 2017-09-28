@@ -1,0 +1,22 @@
+
+.trash-wrapper {
+  .trash-item {
+    position: relative;
+    width: 100%;
+    height: 135px;
+    float: left;
+    padding: 5px;
+    box-sizing: border-box;
+    .image-wrapper {
+      background-color: grey;
+      position: relative;
+      float: left;
+      width: 125px;
+      height: 125px;
+      text-align: center;
+      img {
+        @include vertical-align(relative);
+      }
+    }
+  }
+}

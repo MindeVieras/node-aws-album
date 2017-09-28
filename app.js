@@ -64,6 +64,7 @@ require('./routes/login')(app, passport);
 require('./routes/album')(app, passport);
 require('./routes/user')(app, passport);
 require('./routes/upload')(app, passport);
+require('./routes/utils')(app, passport);
 
 // Set static dir dir css and front js
 app.use(express.static(path.join(__dirname, 'public')));

@@ -6,13 +6,22 @@
   left: 0;
   right: 0;
   height: 35px;
-  width: 100%;
+  padding: 0 10px;
   li {
     display: inline-block;
     a {
       color: $white;
       font-size: 24px;
       line-height: 45px;
+    }
+  }
+  #recycle-bin {
+    float: right;
+    line-height: 35px;
+    font-size: 20px;
+    margin: 0 10px;
+    a {
+      color: $white;
     }
   }
 }

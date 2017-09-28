@@ -1,5 +1,6 @@
 
 const mediaSave = require('../models/media/save');
+const mediaTrash = require('../models/media/trash');
 
 module.exports = function(app, passport) {
 
@@ -8,7 +9,9 @@ module.exports = function(app, passport) {
   app.post('/api/media/generate-thumb', mediaSave.generateThumb);
   app.post('/api/media/rekognition-labels', mediaSave.rekognitionLabels);
   app.post('/api/media/attach', mediaSave.attachMedia);
-  // app.get('/user/edit/:id', isAdmin, user_model.edit);
+  app.post('/api/media/move-to-trash', isAdmin, mediaTrash.moveToTrash);
+  app.post('/api/media/hard-delete', isAdmin, mediaTrash.hardDelete);
+  app.post('/api/media/trash-recover', isAdmin, mediaTrash.recover);
   // app.post('/user/add', isAdmin, user_model.save);
 
 };
