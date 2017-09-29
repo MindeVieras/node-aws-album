@@ -25,12 +25,12 @@ Album.addAlbum = function() {
             console.log(res);
             if (res.ack == 'ok') {
               // Atach new media files if any
-              var mediaData = $('#add_album .file_url').map(function(){
+              var mediaData = $('#add_album .image-preview').map(function(){
                 return {
                   //filename: $(this).data('filename'),
                   //weight: $(this).data('weight'),
                   //file_type: $(this).data('type'),
-                  media_id: $(this).val()
+                  media_id: $(this).attr('data-mediaid')
                 }
               }).get();
 
@@ -142,7 +142,6 @@ Album.initDropzone = function() {
         init: function() {
 
             var dropzone = this;
-            var field = $('#files_urls');
 
             i = 1;
             this.on("addedfile", function(file) {
@@ -177,8 +176,7 @@ Album.initDropzone = function() {
                     if (res.ack == 'ok') {
 
                         $(file.previewElement).find('.status-s3').show().addClass('success');
-                        inp = '<input name="file_url" class="file_url" value="'+res.id+'">';
-                        field.append(inp);
+                        $(file.previewElement).addClass('success-upload').attr('data-mediaid', res.id);
 
                         type = file.type.includes('image') ? 'image' : 'video';
                         
@@ -263,30 +261,6 @@ Album.initDropzone = function() {
         headers: { 'Accept': "*/*" },
         previewsContainer: "#previews",
         clickable: ".fileinput-button"
-    });
-
-    $('.remove-media-file').click(function(){
-        var id = parseInt(this.dataset.mediaid);
-        var btn = this;
-        $.ajax({
-          type: "POST",
-          data: {id: id},
-          url: '/api/media/move-to-trash',
-          dataType: "json",
-          success: function (res) {
-            console.log(res);
-            console.log(btn);
-            if (res.ack == 'ok') {
-              index = $(btn).attr('data-index');
-              $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
-              $(btn).closest('.list-group-item').remove();
-            }
-            else {
-              $('#add_album .error-msg').text('cannot trash this file');
-            }
-          }
-        });
-        return false;
     });
 };
 

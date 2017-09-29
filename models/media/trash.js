@@ -19,13 +19,11 @@ exports.list = function(req, res){
 
 // Move media to trash
 exports.moveToTrash = function(req, res){
-
-    // Update media database entry to move to trash
     connection.query('UPDATE media set status = 2 WHERE id = ?', req.body.id, function(err, rows){
             
-        if(err) throw err
-            console.log(rows);
-          return res.send(JSON.stringify({ack: 'ok', id: req.body.id}));
+        if(err) return res.send(JSON.stringify({ack: 'err', msg: err.code}));
+
+        return res.send(JSON.stringify({ack: 'ok', msg: 'Moved to trash'}));
           
     });
 };

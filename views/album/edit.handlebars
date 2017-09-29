@@ -82,7 +82,7 @@
                         <i class="al-icons rekognition"></i>
                     </div>
 
-                    <span class="btn btn-danger btn-xs remove-media-file remove-file tip-default" title="Move to trash" data-mediaid={{id}}>
+                    <span class="btn btn-danger btn-xs remove-file tip-default" title="Move to trash" data-mediaid={{id}} data-function="Album.moveToTrash">
                         <i class="fa fa-remove"></i>
                     </span>
 
@@ -101,13 +101,6 @@
                 <span>Add files...</span>
             </span>
         </div>
-        
-        <div id="files_urls" class="">
-            {{# each media}}
-                <input class="file_url_db" value="{{id}}">
-            {{/each}}
-        </div>
-
 
 <!-- 
         {# location field #}
