@@ -27,9 +27,6 @@ Album.addAlbum = function() {
               // Atach new media files if any
               var mediaData = $('#add_album .image-preview').map(function(){
                 return {
-                  //filename: $(this).data('filename'),
-                  //weight: $(this).data('weight'),
-                  //file_type: $(this).data('type'),
                   media_id: $(this).attr('data-mediaid')
                 }
               }).get();
