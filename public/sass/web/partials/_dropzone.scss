@@ -78,6 +78,17 @@
       color: red;
     }
   }
+  .status-faces{
+    position: absolute;
+    left: 130px;
+    bottom: 5px;
+    color: $green;
+    background: rgba(255,255,255,0.5);
+    padding: 0 5px;
+    &.error {
+      color: red;
+    }
+  }
   .remove-file{
     position: absolute;
     top: 5px;
