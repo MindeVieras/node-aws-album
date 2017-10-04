@@ -12,7 +12,6 @@ Album.initView = function() {
     Album.initTips();
     // Album.initDatepicker();
     Album.initEditors();
-    //Album.initDropzone();
     // Photobum.initMap();
 };
 
@@ -171,43 +170,11 @@ Album.initView = function() {
 
 // };
 
+// Album Tooltips
 Album.initTips = function () {
-    
     const tipDefault = Array.from(document.querySelectorAll('.tip-default'));
-    tippy(tipDefault);
-    
-    console.log('tipsss');
-  
+    tippy(tipDefault);  
 };
-
-// Album.initDatepicker = function () {
-    
-//     console.log('date pickers inited');
-
-    
-//     // // Start Datepicker
-//     // $('#start_date').datetimepicker({
-//     //         format: 'DD-MM-YYYY, HH:mm:ss',
-//     //         date: moment()
-//     //     }
-//     // );
-
-//     // $('#start_date').on('dp.change', function (e) {
-//     //     $('#end_date').data("DateTimePicker").minDate(e.date);
-//     // });
-
-//     // // End Datepicker
-//     // $('#end_date').datetimepicker({
-//     //         format: 'DD-MM-YYYY, HH:mm:ss',
-//     //         date: moment(),
-//     //         useCurrent: false
-//     //     }
-//     // );
-
-//     // $("#end_date").on("dp.change", function (e) {
-//     //     $('#start_date').data("DateTimePicker").maxDate(e.date);
-//     // });
-// };
 
 // Tinymce editors
 Album.initEditors = function() {
@@ -220,80 +187,14 @@ Album.initEditors = function() {
             menubar:false,
             selector: '#'+$(this).attr('id'),
             height: '150',
+            setup: function(ed) {
+               ed.on('change', function(e) {
+                   Album.toogleSaveButton(true);
+               });
+            }
         });
     });
 };
-
-// Album.initDropzone = function() {
-
-//     $('#add_album').dropzone({
-//         init: function() {
-
-//             var dropzone = this;
-//             var field = $('#files_urls');
-
-//             i = 1;
-//             this.on("addedfile", function(file) {
-//                 console.log(file);
-
-//                 if(file.type.includes('image')){
-//                     EXIF.getData(file, function() {
-//                         var date = EXIF.getTag(this, 'DateTimeOriginal');
-//                         var make = EXIF.getTag(this, 'Make');
-//                         var model = EXIF.getTag(this, 'Model');
-//                         var allMetaData = EXIF.getAllTags(this);
-
-//                         $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
-//                         $(file.previewElement).find('.make-model').text(make+' ('+model+')');
-//                     });
-//                 }
-
-//                 var preview = $(file.previewElement);
-//                 preview.attr('data-index', i++);
-
-//             });
-//             this.on("success", function(file, response) {
-//                 console.log(response);
-//                 s3bucket = '//s3-eu-west-1.amazonaws.com/images.album.mindelis.com/';
-//                 indx = $(file.previewElement).attr('data-index');
-//                 w  = indx - 1;
-//                 type = file.type.includes('image') ? 'image' : 'video';
-//                 field.append('<input name="file_url[]" data-type="'+type+'" data-filename="'+response.new_filename+'" data-index="'+indx+'" data-weight="'+w+'" class="file_url img_weight" value="'+response.location+'">');
-//                 if(type == 'video'){
-//                     var videoPath = s3bucket+response.location;
-//                     var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-//                     $(file.previewElement).find('.preview').append(video);
-//                     $(file.previewElement).addClass('video-preview-item');
-//                 }
-//                 $(file.previewElement).find('.progress-wrapper').hide();
-//                 $(file.previewElement).find('.file-status').show();
-//             });
-//             this.on("removedfile", function(file) {
-//                 indx = $(file.previewElement).attr('data-index');
-//                 $('.file_url[data-index="'+indx+'"]').remove();
-//             });
-//             this.on("error", function(file, message) { 
-//               console.log(message);
-//             });
-
-//         },
-//         url: "/api/upload",
-//         thumbnailWidth: 320,
-//         thumbnailHeight: 210,
-//         parallelUploads: 1,
-//         acceptedFiles: ".jpg,.jpeg,.png,.gif,.mp4,.mpg,.mkv,.avi",
-//         previewTemplate: $('#template').html(),
-//         headers: { 'Accept': "*/*" },
-//         previewsContainer: "#previews",
-//         clickable: ".fileinput-button"
-//     });
-
-//     $('.remove-media-file').click(function(){
-//         index = $(this).attr('data-index');
-//         $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
-//         $(this).closest('.list-group-item').remove();
-//     });
-// };
 
 // Photobum.initMap = function() {
 //     if($('#album_map').length){

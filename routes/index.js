@@ -3,7 +3,8 @@ module.exports = function(app, passport) {
 
   app.get('/', isLoggedIn, function(req, res) {
     res.render('home', {
-      user: req.user
+      user: req.user,
+      device: req.device.type
     });
   });
 

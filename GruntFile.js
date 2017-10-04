@@ -32,13 +32,14 @@ module.exports = function(grunt) {
                 include: [
                     'jquery',
                     //'bootstrap',
-                    'jquery-validation',
-                    'exif-js',
+                    // 'jquery-validation',
+                    // 'exif-js',
                     'moment',
                     'dropzone',
                     'eonasdan-bootstrap-datetimepicker',
                     'tinymce',
-                    // 'tippyjs'
+                    'jquery-typewatch',
+                    // 'tippyjs',
                     'izitoast'
                     //'parsleyjs'
                 ],

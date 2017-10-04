@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const device = require('express-device');
 const helpers = require('handlebars-helpers')();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -57,6 +58,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+app.use(device.capture());
 // routes
 require('./routes/api')(app, passport);
 require('./routes/index')(app, passport);

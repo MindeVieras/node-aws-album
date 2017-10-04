@@ -13,7 +13,8 @@ exports.save = function(req, res){
         filesize: req.body.filesize,
         org_filename : req.body.org_filename,
         content_type : req.body.content_type,
-        status : req.body.status
+        status : req.body.status,
+        uid : req.user.id
     };
 
     // Insert album data

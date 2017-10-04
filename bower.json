@@ -15,14 +15,13 @@
   ],
   "dependencies": {
     "jquery": "^3.2.0",
-    "jquery-validation": "^1.16.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "tinymce": "^4.6.4",
     "dropzone": "^5.1.1",
-    "exif-js": "^2.2.0",
     "bootstrap": "^3.3.7",
     "tippyjs": "^1.2.1",
-    "izitoast": "^1.1.5"
+    "izitoast": "^1.1.5",
+    "jquery-typewatch": "^3.0.0"
   },
   "resolutions": {
     "jquery": "^3.2.0"

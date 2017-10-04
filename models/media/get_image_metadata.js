@@ -20,6 +20,7 @@ module.exports.get = function(key, cb){
         var meta = payload;
 
         if (payload) {
+            // console.log(payload);
             var meta = {};
 
             // make exif object

@@ -10,9 +10,7 @@ Album.moveToTrash = function(info, btn) {
     dataType: "json",
     success: function (res) {
       if (res.ack == 'ok') {
-        // index = $(btn).attr('data-index');
-        // $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
-        $(btn).closest('.list-group-item').remove();
+        $(btn).closest('.uploaded-media-file').remove();
         iziToast.success({
           title: 'OK',
           message: res.msg

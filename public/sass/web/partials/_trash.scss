@@ -9,14 +9,13 @@
     box-sizing: border-box;
     .image-wrapper {
       background-color: grey;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
       position: relative;
       float: left;
       width: 125px;
       height: 125px;
-      text-align: center;
-      img {
-        @include vertical-align(relative);
-      }
     }
   }
 }

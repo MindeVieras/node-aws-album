@@ -1,5 +1,103 @@
 
+Album.watchAlbumForm = function() {
+  var options = {
+    callback: function (value) {
+      var oldValue = $(this).attr('value');
+
+      if (value != oldValue) {
+        Album.toogleSaveButton(true);
+      } else {
+        Album.toogleSaveButton(false);
+      }
+    },
+    wait: 250,
+    highlight: true,
+    allowSubmit: false,
+    captureLength: 1
+  }
+
+  $('#add_album #name').typeWatch(options);
+}
+
+Album.toogleSaveButton = function(state) {
+  if (state) {
+    $('#footer-buttons #save-button').removeAttr('disabled');
+  } else {
+    $('#footer-buttons #save-button').attr('disabled', 'disabled');
+  }
+}
+
 Album.addAlbum = function() {
+
+  var data = {
+    id: $('#add_album #id').val(),
+    name: $('#add_album #name').val(),
+    start_date: $('#add_album #start_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
+    end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
+    body: tinyMCE.get('album_body').getContent()
+  };
+  
+  $.ajax({
+    type: "POST",
+    data: data,
+    url: '/album/add',
+    dataType: "json",
+    success: function (res) {
+      if (res.ack == 'ok') {
+
+        Album.toogleSaveButton(false);
+        
+        iziToast.success({
+          title: res.msg
+        });
+
+        // Atach new media files if any
+        var mediaData = $('#add_album .uploaded-media-file').map(function(){
+          return {
+            media_id: $(this).attr('data-mediaid')
+          }
+        }).get();
+        console.log(mediaData.length);
+        if (mediaData.length > 0 && res.id > 0) {
+          
+          // console.log(mediaData);
+          // console.log('galima attachint');
+
+          // Attach media files to Album
+          Album.attachMedia(mediaData, res.id, 1).done(function(res) {
+            console.log(res);
+            // if (res.ack == 'ok') {
+            //   $(file.previewElement).find('.status-thumb').show().addClass('success');
+            // } else {
+            //   $(file.previewElement).find('.status-thumb').show().addClass('error');
+            // }
+          }).fail(function() {
+              //$(file.previewElement).find('.status-thumb').show().addClass('error');
+              console.log(err);
+          });
+        
+        } else {
+          console.log('negalima attachinti');
+        }
+
+        // window.location.replace('/albums');
+        // window.location.reload();
+      }
+      else if (res.ack == 'form_err') {
+        iziToast.error({
+          title: 'Form error',
+          message: res.msg
+        });
+      }
+      else {
+        iziToast.error({
+          title: 'Can\'t save album',
+          message: 'Error: '+res.msg
+        });
+      }
+    }
+  });
+  return false;
 
   $('#add_album').validate({
       rules: {
@@ -8,67 +106,13 @@ Album.addAlbum = function() {
           end_date: {required: true}
       },
       submitHandler: function(form) {
-        var data = {
-            id: $('#add_album #id').val(),
-            name: $('#add_album #name').val(),
-            start_date: $('#add_album #start_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
-            end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
-            body: tinyMCE.get('album_body').getContent()
-        };
-        console.log(data);
-        $.ajax({
-          type: "POST",
-          data: data,
-          url: '/album/add',
-          dataType: "json",
-          success: function (res) {
-            console.log(res);
-            if (res.ack == 'ok') {
-              // Atach new media files if any
-              var mediaData = $('#add_album .image-preview').map(function(){
-                return {
-                  media_id: $(this).attr('data-mediaid')
-                }
-              }).get();
 
-              console.log(mediaData.length);
-              if (mediaData.length > 0 && res.id > 0) {
-                
-                console.log(mediaData);
-                console.log('galima attachint');
-
-                // Attach media files to Album
-                Album.attachMedia(mediaData, res.id, 1).done(function(res) {
-                  console.log(res);
-                  // if (res.ack == 'ok') {
-                  //   $(file.previewElement).find('.status-thumb').show().addClass('success');
-                  // } else {
-                  //   $(file.previewElement).find('.status-thumb').show().addClass('error');
-                  // }
-                }).fail(function() {
-                    //$(file.previewElement).find('.status-thumb').show().addClass('error');
-                    console.log(err);
-                });
-              
-              } else {
-                console.log('negalima attachinti');
-              }
-
-              // window.location.replace('/albums');
-              // window.location.reload();
-            }
-            else {
-              $('#add_album .error-msg').text(res.msg);
-            }
-          }
-        });
-        return false;
       }
   });
 }
 
 Album.attachMedia = function(mediaData, albumId, status) {
-    
+   
     // // Data for POST
     // media_id: Media ID
     // album_id: Album ID
@@ -80,7 +124,6 @@ Album.attachMedia = function(mediaData, albumId, status) {
                 url: '/api/media/attach',
                 dataType: "json"
             });
-
 }
 
 // Datepicker Add Album
@@ -92,6 +135,7 @@ Album.addAlbumDP = function() {
       }
   );
   $('#add_album #start_date').on('dp.change', function (e) {
+      Album.toogleSaveButton(true);
       $('#add_album #end_date').data("DateTimePicker").minDate(e.date);
   });
 
@@ -104,6 +148,7 @@ Album.addAlbumDP = function() {
   );
 
   $("#add_album #end_date").on("dp.change", function (e) {
+      Album.toogleSaveButton(true);
       $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
   });
 }
@@ -117,6 +162,7 @@ Album.editAlbumDP = function(start, end) {
       }
   );
   $('#add_album #start_date').on('dp.change', function (e) {
+      Album.toogleSaveButton(true);
       $('#add_album #end_date').data("DateTimePicker").minDate(e.date);
   });
 
@@ -129,6 +175,7 @@ Album.editAlbumDP = function(start, end) {
   );
 
   $("#add_album #end_date").on("dp.change", function (e) {
+      Album.toogleSaveButton(true);
       $('#add_album #start_date').data("DateTimePicker").maxDate(e.date);
   });
 }
@@ -143,16 +190,16 @@ Album.initDropzone = function() {
             i = 1;
             this.on("addedfile", function(file) {
 
-                if(file.type.includes('image')){
-                    EXIF.getData(file, function() {
-                        var date = EXIF.getTag(this, 'DateTimeOriginal');
+                // if(file.type.includes('image')){
+                //     EXIF.getData(file, function() {
+                //         var date = EXIF.getTag(this, 'DateTimeOriginal');
 
-                        $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
-                    });
-                }
+                //         $(file.previewElement).find('.file-date-taken').text(Album.convertExifDate(date));
+                //     });
+                // }
 
-                var preview = $(file.previewElement);
-                preview.attr('data-index', i++);
+                // var preview = $(file.previewElement);
+                // preview.attr('data-index', i++);
 
             });
             this.on("success", function(file, response) {
@@ -172,8 +219,9 @@ Album.initDropzone = function() {
                     // After success saving to S3
                     if (res.ack == 'ok') {
 
+                        Album.toogleSaveButton(true);
+                        $(file.previewElement).addClass('uploaded-media-file').attr('data-mediaid', res.id);
                         $(file.previewElement).find('.status-s3').show().addClass('success');
-                        $(file.previewElement).addClass('success-upload').attr('data-mediaid', res.id);
 
                         type = file.type.includes('image') ? 'image' : 'video';
                         
@@ -194,6 +242,7 @@ Album.initDropzone = function() {
 
                             // Generate thumbs
                             Album.generateThumb(response.key).done(function(res) {
+                              // console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-thumb').show().addClass('success');
                                 } else {
@@ -250,6 +299,7 @@ Album.initDropzone = function() {
 
         },
         url: "/upload-media",
+        createImageThumbnails: false,
         thumbnailWidth: 320,
         thumbnailHeight: 210,
         parallelUploads: 1,
@@ -260,7 +310,6 @@ Album.initDropzone = function() {
         clickable: ".fileinput-button"
     });
 };
-
 
 
 // PhotobumAdmin.albumsReady = function() {

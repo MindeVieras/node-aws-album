@@ -16,7 +16,7 @@
     }
   }
   #recycle-bin {
-    float: right;
+    float: left;
     line-height: 35px;
     font-size: 20px;
     margin: 0 10px;
@@ -24,4 +24,9 @@
       color: $white;
     }
   }
+}
+
+#footer-buttons {
+  float: right;
+  margin-top: 2px;
 }

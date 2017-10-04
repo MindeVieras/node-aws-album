@@ -14,7 +14,7 @@
         <!-- name field -->
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name ="name" placeholder="Name..." value="{{saved_album.name}}">
+            <input type="text" class="form-control" required id="name" name ="name" placeholder="Name..." value="{{saved_album.name}}">
         </div>
 
         <!-- start , end date fields -->
@@ -55,7 +55,7 @@
         <div class="list-group files" id="previews">
 
             {{# each media}}
-                <div class="list-group-item image-preview list-group-item-info">
+                <div class="image-preview uploaded-media-file" data-mediaid={{id}}>
                     
                     <span class="preview" style="background-image:url({{img s3_key 'hd'}})">
                     </span>
@@ -138,13 +138,11 @@
 <!-- <div class="form-group pull-left">
     <input type="checkbox" id="album_private" name="album_private" data-checkbox="privateToggle">
 </div> -->
-
-        <input type="submit" class="btn btn-success" value="Save">
     
     </form>
 
     <script>
-      Album.editAlbumDP("{{date saved_album.start_date 'YYYY-MM-DD HH:mm:ss'}}", "{{date saved_album.end_date 'YYYY-MM-DD HH:mm:ss'}}");
-      Album.addAlbum();
-      Album.initDropzone();
+        Album.watchAlbumForm();
+        Album.editAlbumDP("{{date saved_album.start_date 'YYYY-MM-DD HH:mm:ss'}}", "{{date saved_album.end_date 'YYYY-MM-DD HH:mm:ss'}}");
+        Album.initDropzone();
     </script>
