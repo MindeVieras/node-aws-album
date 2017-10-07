@@ -47,7 +47,7 @@ exports.edit = function(req, res){
           
     if(err) return res.send('SQL error: '+err.code);
 
-    query.getMedia(id, function(err, media){
+    query.getMedia(id, 1000, function(err, media){
       res.render('album/edit', {
         title: 'Edit album \''+rows[0]['name']+'\'',
         user: req.user,

@@ -4,18 +4,6 @@ var AWS = require('aws-sdk');
 var gm = require('gm').subClass({ imageMagick: true });
 var path = require('path');
 
-// constants    
-var VERSIONS = [
-    {width: 75, height: 75, name: "icon", crop: true, quality: 70},
-    {width: 250, height: 250, name: "small", crop: true, quality: 75},
-    {width: 400, height: 400, name: "thumbnail", crop: false, quality: 75},
-    {width: 640, height: 480, name: "medium", crop: false, quality: 75},
-    {width: 960, height: 560, name: "large", crop: false, quality: 75},
-    {width: 1280, height: 720, name: "hd", crop: false, quality: 80},
-    {width: 1920, height: 1080, name: "fullhd", crop: false, quality: 85},
-    {width: 3840, height: 2160, name: "uhd", crop: false, quality: 90}
-];
-
 // get reference to S3 client
 var s3 = new AWS.S3();
 
@@ -24,6 +12,7 @@ exports.handle = function(event, context, callback) {
     var srcBucket = event['bucket'];
     var srcKey = decodeURIComponent(event['srcKey'].replace(/\+/g, " "));
     var dstBucket = event['bucket'];
+    var styles = event['styles'];
 
     // Infer the image type.
     var typeMatch = srcKey.match(/\.([^.]*)$/);
@@ -83,7 +72,7 @@ exports.handle = function(event, context, callback) {
 
                 // Transform the image buffer in memory.
                 var buffers = [];
-                createVersion(VERSIONS, 0, buffers);
+                createVersion(styles, 0, buffers);
             });
         },
         function upload(contentType, buffers, next) {
@@ -101,7 +90,7 @@ exports.handle = function(event, context, callback) {
                 }, cb);
             };
 
-            putFile(VERSIONS, 0);
+            putFile(styles, 0);
         }
     ], function (err) {
         if (err) {
@@ -117,7 +106,7 @@ exports.handle = function(event, context, callback) {
             );
         }
 
-        callback(null, VERSIONS);
+        callback(null, styles);
     }
 );
 };

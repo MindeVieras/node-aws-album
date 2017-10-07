@@ -1,25 +1,39 @@
 
+const connection = require('../../config/db');
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws-keys.json');
 const lambda = new AWS.Lambda();
 const config = require('../../config/config');
 
 module.exports.generate = function(key, cb){
+    
+    // Insert album data
+    connection.query('SELECT * FROM media_styles', function(err,rows){
+            
+        if(err) throw err
 
-    // Get S3 file metadata from lambda
-    let params = {
-        FunctionName: 'aws-album_generate_thumb',
-        Payload: '{"srcKey": "'+key+'", "bucket": "'+config.bucket+'"}'
-    };
+        let payloadObj = {
+            srcKey: key,
+            bucket: config.bucket,
+            styles: rows
+        };
 
-    lambda.invoke(params, function(err, data) {
-        
-        if (err) console.log(err);
-        
-        var payload = JSON.parse(data.Payload);
+        let params = {
+            FunctionName: 'aws-album_generate_thumb',
+            Payload: JSON.stringify(payloadObj)
+        };
 
-        cb(null, payload);  
+        lambda.invoke(params, function(err, data) {
+            
+            if (err) console.log(err);
+            
+            var payload = JSON.parse(data.Payload);
 
+            cb(null, payload);  
+
+        });
+          
+          
     });
 
 };
