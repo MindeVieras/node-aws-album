@@ -8,7 +8,7 @@ var ExifImage = require('exif').ExifImage;
 var s3 = new AWS.S3();
 
 exports.handle = function(e, ctx, cb) {
-  var bucket = 'media.album.mindelis.com';
+  var bucket = e['bucket'];
   var srcKey = e['srcKey'];
 
   async.waterfall([

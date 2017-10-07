@@ -106,14 +106,12 @@ exports.faces = function(req, res){
     var key = req.body.key;
     var mediaId = req.body.id;
     
-    //return res.send({ack: 'ok', msg: 'faces for "'+mediaId+'" '+key });
-    
     faces.detect(key, function(err, faces){
 
         // save faces to DB if any
         var faces = faces.FaceDetails;
 
-        // return res.send({ack: 'ok', msg: faces });
+        return res.send({ack: 'ok', msg: faces });
 
         if (faces !== null && typeof faces === 'object') {
 

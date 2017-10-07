@@ -6,13 +6,14 @@ var path = require('path');
 
 // constants    
 var VERSIONS = [
-    {width: 125, height: 125, name: "icon"},
-    {width: 400, height: 400, name: "small"},
-    {width: 640, height: 480, name: "medium"},
-    {width: 1280, height: 720, name: "hd"},
-    {width: 1600, height: 1200, name: "large"},
-    {width: 1920, height: 1080, name: "fullhd"},
-    {width: 3840, height: 2160, name: "uhd"}
+    {width: 75, height: 75, name: "icon", crop: true, quality: 70},
+    {width: 250, height: 250, name: "small", crop: true, quality: 75},
+    {width: 400, height: 400, name: "thumbnail", crop: false, quality: 75},
+    {width: 640, height: 480, name: "medium", crop: false, quality: 75},
+    {width: 960, height: 560, name: "large", crop: false, quality: 75},
+    {width: 1280, height: 720, name: "hd", crop: false, quality: 80},
+    {width: 1920, height: 1080, name: "fullhd", crop: false, quality: 85},
+    {width: 3840, height: 2160, name: "uhd", crop: false, quality: 90}
 ];
 
 // get reference to S3 client
@@ -20,9 +21,9 @@ var s3 = new AWS.S3();
 
 exports.handle = function(event, context, callback) {
     // Read options from the event.
-    var srcBucket = "media.album.mindelis.com";
+    var srcBucket = event['bucket'];
     var srcKey = decodeURIComponent(event['srcKey'].replace(/\+/g, " "));
-    var dstBucket = "media.album.mindelis.com";
+    var dstBucket = event['bucket'];
 
     // Infer the image type.
     var typeMatch = srcKey.match(/\.([^.]*)$/);
@@ -56,18 +57,28 @@ exports.handle = function(event, context, callback) {
                         return;
                     }
 
-                    // Infer the scaling factor to avoid stretching the image unnaturally.
-                    var scalingFactor = Math.min(versions[ind].width / size.width, versions[ind].height / size.height);
-                    var width   = scalingFactor * size.width;
-                    var height = scalingFactor * size.height;
+                    if (versions[ind].crop) {
 
-                    self.quality(80).resize(width, height).toBuffer(imageType, function(err, buffer) {
-                        if (err) next(err);
-                        else {
-                            buffers.push(buffer);
-                            createVersion(versions, ind + 1, buffers);
-                        }
-                    });
+                        self.quality(versions[ind].quality).resize(versions[ind].width, versions[ind].height, '^').gravity('Center').crop(versions[ind].width, versions[ind].height).toBuffer(imageType, function(err, buffer) {
+                            if (err) next(err);
+                            else {
+                                buffers.push(buffer);
+                                createVersion(versions, ind + 1, buffers);
+                            }
+                        });
+                    } else {
+                        // Infer the scaling factor to avoid stretching the image unnaturally.
+                        var scalingFactor = Math.min(versions[ind].width / size.width, versions[ind].height / size.height);
+                        var width   = scalingFactor * size.width;
+                        var height = scalingFactor * size.height;
+                        self.quality(versions[ind].quality).resize(width, height).toBuffer(imageType, function(err, buffer) {
+                            if (err) next(err);
+                            else {
+                                buffers.push(buffer);
+                                createVersion(versions, ind + 1, buffers);
+                            }
+                        });
+                    }
                 }
 
                 // Transform the image buffer in memory.

@@ -4,8 +4,6 @@ const moment = require('moment');
 const connection = require('../config/db');
 const query = require('./query');
 
-//const AWS = require('aws-sdk');
-
 // Gets users list
 exports.list = function(req, res){
 

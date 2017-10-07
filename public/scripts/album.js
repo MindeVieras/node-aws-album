@@ -242,7 +242,7 @@ Album.initDropzone = function() {
 
                             // Generate thumbs
                             Album.generateThumb(response.key).done(function(res) {
-                              // console.log(res);
+                              console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-thumb').show().addClass('success');
                                 } else {
@@ -268,7 +268,7 @@ Album.initDropzone = function() {
 
                             // Get and save faces
                             Album.faces(res.id, response.key).done(function(res) {
-                                console.log(res);
+                                //console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-faces').show().addClass('success');
                                 } else {

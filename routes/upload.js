@@ -3,6 +3,7 @@ const path =require('path');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const config = require('../config/config');
 
 AWS.config.loadFromPath('./aws-keys.json');
 
@@ -12,7 +13,7 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     acl: 'public-read',
-    bucket: 'media.album.mindelis.com',
+    bucket: config.bucket,
     metadata: function (req, file, cb) {
       cb(null, {fieldName: file.fieldname});
     },

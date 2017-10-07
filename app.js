@@ -13,6 +13,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const app = express();
 
+const config = require('./config/config');
+
 //console.log(helpers);
 // configuration ===============================================================
 // connect to our database
@@ -36,7 +38,7 @@ const hbs = exphbs.create({
     helpers: {
       img: function (key, size) {
             // console.log(size);
-            return '//s3-eu-west-1.amazonaws.com/media.album.mindelis.com/thumbs/'+size+'/'+path.basename(key);
+            return '//s3-eu-west-1.amazonaws.com/'+config.bucket+'/thumbs/'+size+'/'+path.basename(key);
           }
     },
     partialsDir: [
@@ -57,6 +59,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+// // Set local variables
+// app.locals({
+//     site: {
+//         title: 'ExpressBootstrapEJS',
+//         description: 'A boilerplate for a simple web application with a Node.JS and Express backend, with an EJS template with using Twitter Bootstrap.'
+//     },
+//     author: {
+//         name: 'Cory Gross',
+//         contact: 'CoryG89@gmail.com'
+//     }
+// });
 
 app.use(device.capture());
 // routes

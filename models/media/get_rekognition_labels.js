@@ -2,13 +2,14 @@
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws-keys.json');
 const rekognition = new AWS.Rekognition();
+const config = require('../../config/config');
 
 module.exports.get = function(key, cb){
 
     var params = {
         Image: {
             S3Object: {
-                Bucket: "media.album.mindelis.com", 
+                Bucket: config.bucket, 
                 Name: key
             }
         }, 
