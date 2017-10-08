@@ -1,5 +1,6 @@
 
 const connection = require('../../config/db');
+const deleteFromS3 = require('./delete_from_s3');
 
 // Gets trash list
 exports.list = function(req, res){
@@ -42,19 +43,25 @@ exports.recover = function(req, res){
     });
 };
 
-// Completely remove media file from system
+// Completely remove media file from system and S3
 exports.hardDelete = function(req, res){
-    return res.send(JSON.stringify({ack: 'ok', id: req.body.id}));
-    // let mediaData = {
-    //     status: 2
-    // };
+    
+    var id = req.body.id;
+    
+    // Firstly delete image and thumbnails from S3
+    deleteFromS3.deleteImage(id, function (err, data) {
+        
+        if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
+        
+        // Delete media
+        connection.query('DELETE FROM media WHERE id = ?', id);
+        // Delete meta
+        connection.query('DELETE FROM media_meta WHERE media_id = ?', id);
+        // Delete rekognition
+        connection.query('DELETE FROM rekognition WHERE media_id = ?', id);
+        
+        return res.send(JSON.stringify({ack: 'ok', msg: 'Media file deleted for good'}));
 
-    // // Update media database entry to move to trash
-    // connection.query('UPDATE media set status = 2 WHERE id = ?', req.body.id,  function(err,rows){
-            
-    //     if(err) throw err
-    //         console.log(rows);
-    //       return res.send(JSON.stringify({ack: 'ok', id: 9}));
-          
-    // });
+    });
+
 };

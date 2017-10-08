@@ -30,25 +30,33 @@ Album.moveToTrash = function(info, btn) {
 Album.trashHardDelete = function(info, btn) {
 
   // console.log(btn);
-  console.log(info);
+  // console.log(info);
   var id = parseInt(info.mediaid);
   // // var btn = this;
-  console.log(id);
+  // console.log(id);
   $.ajax({
     type: "POST",
     data: {id: id},
     url: '/api/media/hard-delete',
     dataType: "json",
     success: function (res) {
-      // console.log(res);
+      console.log(res);
       // console.log(btn);
       if (res.ack == 'ok') {
+        $(btn).closest('.trash-item').remove();
+        iziToast.success({
+          title: 'OK',
+          message: res.msg
+        });
         // index = $(btn).attr('data-index');
         // $('.file_url_db[data-index="'+index+'"]').addClass('file_remove');
         // $(btn).closest('.list-group-item').remove();
       }
       else {
-        console.log('cannot delete media file');
+        iziToast.error({
+          title: 'Can\'t delete file',
+          message: 'Error: '+res.msg
+        });
       }
     }
   });

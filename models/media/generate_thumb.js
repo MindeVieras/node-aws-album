@@ -7,7 +7,7 @@ const config = require('../../config/config');
 
 module.exports.generate = function(key, cb){
     
-    // Insert album data
+    // Firtly get image media styles
     connection.query('SELECT * FROM media_styles', function(err,rows){
             
         if(err) throw err

@@ -210,7 +210,7 @@ Album.initDropzone = function() {
                     org_filename: response.originalname,
                     filesize: response.size,
                     mime: response.mimetype,
-                    content_type : 3, // Album
+                    content_type : 2, // Album
                     status : 0, // Non Active
                 }
 
@@ -227,7 +227,6 @@ Album.initDropzone = function() {
                         
                         // Run other processes if image
                         if(type == 'image'){
-
                             // Save image exif metadata
                             Album.saveExif(res.id, response.key).done(function(res) {
                                 if (res.ack == 'ok') {
@@ -242,7 +241,7 @@ Album.initDropzone = function() {
 
                             // Generate thumbs
                             Album.generateThumb(response.key).done(function(res) {
-                              console.log(res);
+                              // console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-thumb').show().addClass('success');
                                 } else {
@@ -278,8 +277,6 @@ Album.initDropzone = function() {
                                 $(file.previewElement).find('.status-faces').show().addClass('error');
                                 console.log(err);
                             });
-
-                            console.log('image');
                         }
 
                         if(type == 'video'){
