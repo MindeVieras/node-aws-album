@@ -1,7 +1,6 @@
 
 module.exports = function(app, passport) {
-
-  app.get('/', isLoggedIn, function(req, res) {
+  app.get('/', isAuthed, function(req, res) {
     res.render('home', {
       user: req.user,
       device: req.device.type
@@ -11,7 +10,7 @@ module.exports = function(app, passport) {
 };
 
 // route middleware to make sure
-function isLoggedIn(req, res, next) {
+function isAuthed(req, res, next) {
 
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated())

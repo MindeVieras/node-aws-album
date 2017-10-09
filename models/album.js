@@ -9,7 +9,7 @@ exports.list = function(req, res){
 
   let footer_buttons = '<a href="/album/add" class="btn btn-sm btn-success">New Album</a>';
 
-  connection.query('SELECT * FROM albums',function(err,rows)     {
+  connection.query('SELECT * FROM albums WHERE uid = ?', req.user.id, function(err,rows)     {
           
     if(err)
       console.log("Error Selecting : %s ",err );
