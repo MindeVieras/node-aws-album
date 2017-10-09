@@ -4,12 +4,18 @@ const moment = require('moment');
 const connection = require('../config/db');
 const query = require('./query');
 
-// Gets users list
+// Gets albums list
 exports.list = function(req, res){
 
   let footer_buttons = '<a href="/album/add" class="btn btn-sm btn-success">New Album</a>';
 
-  connection.query('SELECT * FROM albums WHERE uid = ?', req.user.id, function(err,rows)     {
+  if(req.user.access_level === 100) {
+    var sql = 'SELECT * FROM albums';
+  } else {
+    var sql = 'SELECT * FROM albums WHERE uid = '+connection.escape(req.user.id);
+  }
+
+  connection.query(sql, function(err,rows)     {
           
     if(err)
       console.log("Error Selecting : %s ",err );
@@ -24,7 +30,7 @@ exports.list = function(req, res){
     });
 };
 
-// Gets add user template
+// Gets add album template
 exports.add = function(req, res){
 
   let footer_buttons = '<button id="save-button" data-function="Album.addAlbum" class="btn btn-sm btn-success">Save</button>';
@@ -36,26 +42,41 @@ exports.add = function(req, res){
   });
 };
 
-// Gets edit user template
+// Gets edit album template
 exports.edit = function(req, res){
 
   let id = req.params.id;
 
   let footer_buttons = '<button disabled="disabled" id="save-button" data-function="Album.addAlbum" class="btn btn-sm btn-success">Update</button>';
 
-  connection.query('SELECT * FROM albums WHERE id = ?', [id], function(err,rows){
+  if(req.user.access_level === 100) {
+    var sql = 'SELECT * FROM albums WHERE id = '+connection.escape(id);
+  } else {
+    var sql = 'SELECT * FROM albums WHERE id = '+connection.escape(id)+' AND uid = ' + connection.escape(req.user.id);
+  }
+
+  connection.query(sql, function(err,rows){
           
     if(err) return res.send('SQL error: '+err.code);
-
-    query.getMedia(id, 1000, function(err, media){
-      res.render('album/edit', {
-        title: 'Edit album \''+rows[0]['name']+'\'',
-        user: req.user,
-        saved_album: rows[0],
-        media: media,
-        footer_buttons: footer_buttons
+    console.log(rows);
+    if(rows[0] != null) {    
+      query.getMedia(id, 1000, function(err, media){
+        res.render('album/edit', {
+          title: 'Edit album \''+rows[0]['name']+'\'',
+          user: req.user,
+          saved_album: rows[0],
+          media: media,
+          footer_buttons: footer_buttons
+        });
       });
-    });
+    } else {
+
+      res.render('errors/access_denied', {
+        title: 'Unauthorized',
+        user: req.user
+      });
+
+    }
   });
 };
 
