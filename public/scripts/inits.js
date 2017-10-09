@@ -172,7 +172,7 @@ Album.initView = function() {
 
 // Album Tooltips
 Album.initTips = function () {
-    const tipDefault = Array.from(document.querySelectorAll('.tip-default'));
+    const tipDefault = Array.from(document.querySelectorAll('.desktop .tip-default'));
     tippy(tipDefault);  
 };
 

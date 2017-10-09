@@ -24,7 +24,8 @@ exports.list = function(req, res){
         title: 'All albums',
         albums: rows,
         user: req.user,
-        footer_buttons: footer_buttons
+        footer_buttons: footer_buttons,
+        device: req.device.type
       });
                          
     });
@@ -38,7 +39,8 @@ exports.add = function(req, res){
   res.render('album/add', {
     title: 'Add new album',
     user: req.user,
-    footer_buttons: footer_buttons
+    footer_buttons: footer_buttons,
+    device: req.device.type
   });
 };
 
@@ -66,14 +68,16 @@ exports.edit = function(req, res){
           user: req.user,
           saved_album: rows[0],
           media: media,
-          footer_buttons: footer_buttons
+          footer_buttons: footer_buttons,
+          device: req.device.type
         });
       });
     } else {
 
       res.render('errors/access_denied', {
         title: 'Unauthorized',
-        user: req.user
+        user: req.user,
+        device: req.device.type
       });
 
     }

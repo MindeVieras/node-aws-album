@@ -60,18 +60,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// // Set local variables
-// app.locals({
-//     site: {
-//         title: 'ExpressBootstrapEJS',
-//         description: 'A boilerplate for a simple web application with a Node.JS and Express backend, with an EJS template with using Twitter Bootstrap.'
-//     },
-//     author: {
-//         name: 'Cory Gross',
-//         contact: 'CoryG89@gmail.com'
-//     }
-// });
-
 app.use(device.capture());
 // routes
 require('./routes/api')(app, passport);

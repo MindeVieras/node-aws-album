@@ -13,8 +13,8 @@ exports.list = function(req, res){
         res.render('user/list', {
           title: 'All users',
           users: rows,
-          user: req.user
-          //message: req.flash('loginMessage')
+          user: req.user,
+          device: req.device.type
         });
                          
     });
@@ -24,7 +24,8 @@ exports.list = function(req, res){
 exports.add = function(req, res){
     res.render('user/add', {
       title: 'Add new user',
-      user: req.user
+      user: req.user,
+      device: req.device.type
     });
 };
 
@@ -42,7 +43,8 @@ exports.edit = function(req, res){
 		    res.render('user/edit', {
 		      title: 'Edit user',
 		      user: req.user,
-		      saved_user: rows[0] 
+		      saved_user: rows[0],
+          device: req.device.type
 		    });            
     });
 };

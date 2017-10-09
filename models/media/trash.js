@@ -12,7 +12,8 @@ exports.list = function(req, res){
         res.render('utils/trash', {
           title: 'Trash',
           media: rows,
-          user: req.user
+          user: req.user,
+          device: req.device.type
         });
                          
     });
