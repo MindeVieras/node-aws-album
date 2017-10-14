@@ -3,7 +3,6 @@ const connection = require('../../config/db');
 const getImageMeta = require('./get_image_metadata');
 const generateThumb = require('./generate_thumb');
 const getRekognitionLabels = require('./get_rekognition_labels');
-const faces = require('./faces');
 
 // Save media in DB
 exports.save = function(req, res){
@@ -94,69 +93,6 @@ exports.rekognitionLabels = function(req, res){
 
         } else {
             return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
-        }
-    });
-    //console.log(key);
-};
-
-
-// Get and Save Image Labels from AWS rekognition
-exports.faces = function(req, res){
-
-    var key = req.body.key;
-    var mediaId = req.body.id;
-    
-    faces.detect(key, function(err, faces){
-
-        // save faces to DB if any
-        var faces = faces.FaceDetails;
-
-        return res.send({ack: 'ok', msg: faces });
-
-        if (faces !== null && typeof faces === 'object') {
-
-            // make meta array
-            var values = [];
-            Object.keys(faces).forEach(function (key) {
-                let obj = faces[key];
-                values.push([
-                    mediaId,
-                    obj.Confidence,
-                    obj.BoundingBox.Width,
-                    obj.BoundingBox.Height,
-                    obj.BoundingBox.Left,
-                    obj.BoundingBox.Top,
-                    obj.Pose.Roll,
-                    obj.Pose.Yaw,
-                    obj.Pose.Pitch,
-                    obj.Landmarks[0]['X'],
-                    obj.Landmarks[0]['Y'],
-                    obj.Landmarks[1]['X'],
-                    obj.Landmarks[1]['Y'],
-                    obj.Landmarks[2]['X'],
-                    obj.Landmarks[2]['Y'],
-                    obj.Landmarks[3]['X'],
-                    obj.Landmarks[3]['Y'],
-                    obj.Landmarks[4]['X'],
-                    obj.Landmarks[4]['Y'],
-                    obj.Quality.Brightness,
-                    obj.Quality.Sharpness
-                ]);
-            });
-            // make DB query
-            var sql = "INSERT INTO faces_detected (media_id,confidence,box_width,box_height,box_left,box_top,roll,yaw,pitch,eye_left_x,eye_left_y,eye_right_x,eye_right_y,nose_x,nose_y,mouth_left_x,mouth_left_y,mouth_right_x,mouth_right_y,brightness,sharpness) VALUES ?";
-            connection.query(sql, [values], function(err, rows) {
-                if (err) {
-                    console.log(err);
-                    return res.send({ack: 'err', msg: 'cant save faces', data: values});
-                } else {
-                    return res.send({ack: 'ok', msg: 'all faces saved', data: values});
-                }
-              
-            });
-
-        } else {
-            return res.send(JSON.stringify({ack: 'err', msg: 'no faces detected'}));
         }
     });
     //console.log(key);

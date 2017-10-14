@@ -1,0 +1,25 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <span class="title">{{title}}</span>
+    <button type="button" class="btn btn-default btn-xs close pull-right" data-dismiss="modal" aria-hidden="true">
+      <i class="fa fa-close"></i>
+    </button>
+  </h4>
+</div>
+
+<div class="modal-body">
+  <div class="form-wrapper">
+    <form id="add_faces_collection">
+
+      <div class="form-group">
+        <label for="collection_id">ID</label>
+        <input type="text" class="form-control" id="collection_id" name="collection_id" placeholder="Collection ID">
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">  
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <button type="button" class="btn btn-success" data-function="Album.addFacesCollection">Save</button>
+</div>

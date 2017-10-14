@@ -12,7 +12,7 @@ var Album = (function() {
             if (id[0] == '#') {
                 id = id.substring(1);
             }
-            $("#modaltemplate").clone().attr('id', id).insertAfter("#modaltemplate");
+            $("#modal-template").clone().attr('id', id).insertAfter("#modal-template");
             return '#' + id;
         },
         populateModalDataFields: function(btn) {

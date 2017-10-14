@@ -61,18 +61,3 @@ Album.rekognitionLabels = function(id, key) {
             });
 
 }
-
-Album.faces = function(id, key) {
-    
-    // // Data for POST
-    // id: Media ID
-    // key: S3 key
-
-    return $.ajax({
-                type: "POST",
-                data: {id: id, key:key},
-                url: '/api/media/faces',
-                dataType: "json"
-            });
-
-}

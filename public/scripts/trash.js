@@ -1,6 +1,5 @@
 
 Album.moveToTrash = function(info, btn) {
-  console.log('sdfsdasd');
   var id = parseInt(info.mediaid);
   
   $.ajax({

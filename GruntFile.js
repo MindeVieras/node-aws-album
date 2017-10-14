@@ -31,7 +31,7 @@ module.exports = function(grunt) {
                 },
                 include: [
                     'jquery',
-                    //'bootstrap',
+                    'bootstrap',
                     // 'jquery-validation',
                     // 'exif-js',
                     'moment',

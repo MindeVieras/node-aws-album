@@ -1,0 +1,16 @@
+
+{{> general/title}}
+
+<ul id="faces-collections-list">
+  
+  {{# each collections}}
+  <li class="faces-collection-item">
+    {{this}}
+    <button type="button" data-collection_id="{{this}}" class="btn btn-default btn-xs pull-right" data-function="Album.deleteFacesCollection">
+      <i class="fa fa-close"></i>
+    </button>
+
+  </li>
+  {{/each}}
+
+</ul>
