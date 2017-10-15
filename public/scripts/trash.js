@@ -37,7 +37,7 @@ Album.trashHardDelete = function(info, btn) {
     dataType: "json",
     success: function (res) {
       if (res.ack == 'ok') {
-        $(btn).closest('.trash-item').remove();
+        $(btn).closest('.list-item').remove();
         iziToast.success({
           title: 'OK',
           message: res.msg
@@ -65,7 +65,7 @@ Album.trashRecover = function(info, btn) {
     dataType: "json",
     success: function (res) {
       if (res.ack == 'ok') {
-        $(btn).closest('.trash-item').remove();
+        $(btn).closest('.list-item').remove();
         iziToast.success({
           title: 'OK',
           message: res.msg

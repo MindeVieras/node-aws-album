@@ -1,4 +1,5 @@
 
+const path = require('path');
 const validator = require('validator');
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws-keys.json');
@@ -39,7 +40,7 @@ module.exports.indexFaces = function(req, res){
             }
         },
         DetectionAttributes: ['ALL'],
-        ExternalImageId: 'STRING_VALUE'
+        ExternalImageId: path.basename(key)
     };
 
     rekognition.indexFaces(params, function(err, data) {
@@ -85,7 +86,7 @@ exports.listFaces = function(req, res){
     if (err) {
       console.log(err, err.stack)
     } else {
-
+      
       let footer_buttons = '<a href="/faces/add/collection" data-remote="/faces/add/collection" class="btn btn-sm btn-success">New Collection</a>';
 
       res.render('faces/list', {

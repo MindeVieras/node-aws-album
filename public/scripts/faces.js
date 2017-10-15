@@ -60,14 +60,12 @@ Album.deleteFace = function(info, btn) {
     collection_id: info.collection_id,
     face_id: info.face_id
   };
-  console.log(data);
   $.ajax({
     type: "POST",
     data: data,
     url: '/api/faces/delete-face',
     dataType: "json",
     success: function (res) {
-      console.log(res);
       if (res.ack == 'ok') {
         $(btn).closest('.face-item').remove();
         iziToast.success({

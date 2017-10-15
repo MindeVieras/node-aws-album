@@ -1,9 +1,11 @@
 
-const trash_model = require('../models/media/trash');
+const trash = require('../models/media/trash');
+const unattachedMedia = require('../models/media/unattached');
 
 module.exports = function(app, passport) {
 
-  app.get('/trash', isAdmin, trash_model.list);
+  app.get('/trash', isAdmin, trash.list);
+  app.get('/unattached-media', isAdmin, unattachedMedia.list);
 
 };
 
