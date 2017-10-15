@@ -6,14 +6,11 @@
 
     <form id="add_album" action="/album/add" method="post">
 
-        <div class="error-msg"></div>
-
         <!-- ID field -->
         <input type="hidden" id="id" name="id" value="{{saved_album.id}}">
 
         <!-- name field -->
         <div class="form-group">
-            <label for="name">Name</label>
             <input type="text" class="form-control" required id="name" name ="name" placeholder="Name..." value="{{saved_album.name}}">
         </div>
 
@@ -35,21 +32,17 @@
             </div>
         </div>
 
-<!--         <button type="button" class="btn btn-info update-dates" data-function="PhotobumAdmin.updateDates">
-            <i class="fa fa-refresh"></i>
-        </button> -->
-
-        <!-- label -->
-<!--         <div class="form-group">
-            <label for="album_images">Photos</label>
-            <div class="row"><small class="col-xs-12 form-text text-muted">
-                Max files: get_ini('max_file_uploads'&nbsp;|
-                Max upload size: get_ini('upload_max_filesize')&nbsp;|
-                Max post size: get_ini('post_max_size')&nbsp;|
-                Max exec time: get_ini('max_execution_time')&nbsp;|
-                Memory limit: get_ini('memory_limit')
-            </small></div>
-        </div> -->
+        <div class="form-group">
+            <!-- dropzone input -->
+            <span class="btn btn-success fileinput-button dz-clickable">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add files...</span>
+            </span>
+            <!-- update dates button -->
+            <button type="button" class="btn btn-info update-dates" data-function="Album.updateDates">
+                <i class="fa fa-refresh"></i>
+            </button>
+        </div>
 
         <!-- files in db -->
         <div class="list-group files" id="previews">
@@ -95,14 +88,6 @@
             <!-- dropzone preview -->
             {{> general/dropzone_album}}
 
-        </div>
-
-        <!-- dropzone input -->
-        <div class="form-group">
-            <span class="btn btn-success fileinput-button dz-clickable">
-                <i class="glyphicon glyphicon-plus"></i>
-                <span>Add files...</span>
-            </span>
         </div>
 
 <!-- 

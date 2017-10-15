@@ -6,63 +6,44 @@
 
     <form id="add_album" action="/album/add" method="post">
 
-        <div class="error-msg"></div>
-
         <!-- name field -->
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name ="name" placeholder="Name...">
+            <input type="text" class="form-control" id="name" name ="name" placeholder="Album name">
         </div>
 
         <!-- start , end date fields -->
         {{current_date}}
-        <div class="form-group">
-            <label for="start_date">Start Date</label>
-            <div class="input-group date" id="start_date">
-                <input type="text" class="form-control" />
-                <span class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </span>
+        <div class="dates-wrapper">
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <div class="input-group date">
+                    <input type="text" class="form-control" id="start_date" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <div class="input-group date">
+                    <input type="text" class="form-control" id="end_date" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="end_date">End Date</label>
-            <div class="input-group date" id="end_date">
-                <input type="text" class="form-control" />
-                <span class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </span>
-            </div>
-        </div>
-
-<!--         <button type="button" class="btn btn-info update-dates" data-function="PhotobumAdmin.updateDates">
-            <i class="fa fa-refresh"></i>
-        </button> -->
-
-        <!-- label -->
-<!--         <div class="form-group">
-            <label for="album_images">Photos</label>
-            <div class="row"><small class="col-xs-12 form-text text-muted">
-                Max files: get_ini('max_file_uploads'&nbsp;|
-                Max upload size: get_ini('upload_max_filesize')&nbsp;|
-                Max post size: get_ini('post_max_size')&nbsp;|
-                Max exec time: get_ini('max_execution_time')&nbsp;|
-                Memory limit: get_ini('memory_limit')
-            </small></div>
-        </div> -->
         
         <!-- dropzone preview -->
         <div class="list-group files" id="previews">
             {{> general/dropzone_album}}
         </div>
 
-        <!-- dropzone input -->
         <div class="form-group">
+            <!-- dropzone input -->
             <span class="btn btn-success fileinput-button dz-clickable">
                 <i class="glyphicon glyphicon-plus"></i>
                 <span>Add files...</span>
             </span>
+            <!-- update dates button -->
+            <button type="button" class="btn btn-info update-dates" data-function="Album.updateDates">
+                <i class="fa fa-refresh"></i>
+            </button>
         </div>
 
 <!-- 
