@@ -19,6 +19,27 @@ Album.watchAlbumForm = function() {
   $('#add_album #name').typeWatch(options);
 }
 
+Album.updateDates = function() {
+
+    // make array of all dates
+    var dates = $('.file-date-taken').map(function(){
+        date = $(this).text();
+        return date;
+    }).get();
+
+    dates = dates.filter(Boolean);
+    
+    dates.sort(function(a,b){
+        return moment.utc(a).diff(moment.utc(b));
+    });
+
+    start_date = dates[0];
+    end_date = dates.slice(-1).pop();
+
+    $('#start_date').data("DateTimePicker").date(new Date(start_date));
+    $('#end_date').data("DateTimePicker").date(new Date(end_date));
+};
+
 Album.toogleSaveButton = function(state) {
   if (state) {
     $('#footer-buttons #save-button').removeAttr('disabled');
@@ -47,9 +68,9 @@ Album.addAlbum = function() {
 
         Album.toogleSaveButton(false);
         
-        iziToast.success({
-          title: res.msg
-        });
+        // iziToast.success({
+        //   title: res.msg
+        // });
 
         // Atach new media files if any
         var mediaData = $('#add_album .uploaded-media-file').map(function(){
@@ -57,7 +78,7 @@ Album.addAlbum = function() {
             media_id: $(this).attr('data-mediaid')
           }
         }).get();
-        console.log(mediaData.length);
+
         if (mediaData.length > 0 && res.id > 0) {
           
           // console.log(mediaData);
@@ -66,6 +87,7 @@ Album.addAlbum = function() {
           // Attach media files to Album
           Album.attachMedia(mediaData, res.id, 1).done(function(res) {
             console.log(res);
+
             // if (res.ack == 'ok') {
             //   $(file.previewElement).find('.status-thumb').show().addClass('success');
             // } else {
@@ -74,13 +96,14 @@ Album.addAlbum = function() {
           }).fail(function() {
               //$(file.previewElement).find('.status-thumb').show().addClass('error');
               console.log(err);
+              return;
           });
         
         } else {
           console.log('negalima attachinti');
         }
 
-        // window.location.replace('/albums');
+        window.location.replace('/album/edit/'+res.id);
         // window.location.reload();
       }
       else if (res.ack == 'form_err') {
@@ -141,7 +164,7 @@ Album.addAlbumDP = function() {
 
   // End Datepicker
   $('#add_album #end_date').datetimepicker({
-          format: 'YYYY-DD-MM, HH:mm:ss',
+          format: 'YYYY-MM-DD, HH:mm:ss',
           date: moment(),
           useCurrent: false
       }
@@ -228,15 +251,17 @@ Album.initDropzone = function() {
                         // Run other processes if image
                         if(type == 'image'){
                             // Save image exif metadata
-                            Album.saveExif(res.id, response.key).done(function(res) {
-                                if (res.ack == 'ok') {
-                                    $(file.previewElement).find('.status-exif').show().addClass('success');
-                                } else {
-                                    $(file.previewElement).find('.status-exif').show().addClass('error');
-                                }
-                            }).fail(function() {
+                            Album.saveExif(res.id, response.key).done(function(res) {                              
+                              console.log(res);
+                              if (res.ack == 'ok') {
+                                $(file.previewElement).find('.status-exif').show().addClass('success');
+                                $(file.previewElement).find('.file-date-taken').text(res.data.datetime);
+                              } else {
                                 $(file.previewElement).find('.status-exif').show().addClass('error');
-                                console.log(err);
+                              }
+                            }).fail(function() {
+                              $(file.previewElement).find('.status-exif').show().addClass('error');
+                              console.log(err);
                             });
 
                             // Generate thumbs
@@ -267,7 +292,7 @@ Album.initDropzone = function() {
 
                             // Get and save faces
                             Album.facesIndex(res.id, response.key).done(function(res) {
-                                console.log(res);
+                                // console.log(res);
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-faces').show().addClass('success');
                                 } else {

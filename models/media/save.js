@@ -47,13 +47,9 @@ exports.saveExif = function(req, res){
 
             // make DB query
             var sql = "INSERT INTO media_meta (media_id, meta_name, meta_value) VALUES ?";
-            connection.query(sql, [values], function(err) {
-                if (err) {
-                    return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
-                } else {
-                    return res.send(JSON.stringify({ack: 'ok', msg: 'all meta saved'}));
-                }
-              
+            connection.query(sql, [values], function(err, rows) {
+                if (err) return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
+                return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all meta saved'}));
             });
 
         } else {

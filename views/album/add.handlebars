@@ -29,11 +29,6 @@
             </div>
         </div>
         
-        <!-- dropzone preview -->
-        <div class="list-group files" id="previews">
-            {{> general/dropzone_album}}
-        </div>
-
         <div class="form-group">
             <!-- dropzone input -->
             <span class="btn btn-success fileinput-button dz-clickable">
@@ -41,9 +36,14 @@
                 <span>Add files...</span>
             </span>
             <!-- update dates button -->
-            <button type="button" class="btn btn-info update-dates" data-function="Album.updateDates">
+            <button type="button" class="btn btn-info update-dates tip-default" title="Update dates" data-function="Album.updateDates">
                 <i class="fa fa-refresh"></i>
             </button>
+        </div>
+
+        <!-- dropzone preview -->
+        <div class="list-group files" id="previews">
+            {{> general/dropzone_album}}
         </div>
 
 <!-- 
