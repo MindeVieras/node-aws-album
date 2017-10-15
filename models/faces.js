@@ -26,10 +26,12 @@ module.exports.detect = function(key, cb){
 };
 
 // Index all rekognized faces to AWS
-module.exports.indexFaces = function(key, cb){
+module.exports.indexFaces = function(req, res){
 
+    let key = JSON.parse(JSON.stringify(req.body.key));
+    
     var params = {
-        CollectionId: 'album_faces',
+        CollectionId: config.faces_collection,
         Image: {
             S3Object: {
                 Bucket: config.bucket,
@@ -39,13 +41,11 @@ module.exports.indexFaces = function(key, cb){
         DetectionAttributes: ['ALL'],
         ExternalImageId: 'STRING_VALUE'
     };
-    
+
     rekognition.indexFaces(params, function(err, data) {
-        if (err) cb(err.message);
-        else cb(null, data);
+      if (err) return res.send(JSON.stringify({ack:'err', msg: err.message}));
+      else return res.send(JSON.stringify({ack:'ok', msg: data}));
     });
-
-
 };
 
 // Gets face collections list
@@ -73,6 +73,51 @@ exports.listCollections = function(req, res){
 
 };
 
+// Gets faces list from collection
+exports.listFaces = function(req, res){
+
+  var params = {  
+    CollectionId: req.params.collection_id, 
+    MaxResults: 20
+  };
+  
+  rekognition.listFaces(params, function(err, data) {
+    if (err) {
+      console.log(err, err.stack)
+    } else {
+
+      let footer_buttons = '<a href="/faces/add/collection" data-remote="/faces/add/collection" class="btn btn-sm btn-success">New Collection</a>';
+
+      res.render('faces/list', {
+        title: 'Faces list',
+        user: req.user,
+        faces: data.Faces,
+        collection_id: req.params.collection_id,
+        footer_buttons: footer_buttons,
+        device: req.device.type
+      });
+    }
+  });
+
+};
+
+// Deletes face form collection
+exports.deleteFace = function(req, res){
+
+    let collectionId = JSON.parse(JSON.stringify(req.body.collection_id));
+    let faceId = JSON.parse(JSON.stringify(req.body.face_id));
+
+    var params = {
+      CollectionId: collectionId, 
+      FaceIds: [faceId]
+    };
+    
+    rekognition.deleteFaces(params, function(err, data) {
+      if (err) return res.send(JSON.stringify({ack:'err', msg: err.message}));
+      else return res.send(JSON.stringify({ack:'ok', msg: 'Face deleted'}));
+    });
+};
+
 // Adds new collection form to AWS
 exports.addCollectionForm = function(req, res){
 
@@ -98,7 +143,7 @@ exports.addNewCollection = function(req, res){
     };
 
     rekognition.createCollection(params, function(err, data) {
-      if (err) return res.send(JSON.stringify({ack:'err', msg: err.stack}));
+      if (err) return res.send(JSON.stringify({ack:'err', msg: err.message}));
       else return res.send(JSON.stringify({ack:'ok', msg: data}));
     });
 };

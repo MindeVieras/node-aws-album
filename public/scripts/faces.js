@@ -1,6 +1,4 @@
 
-
-
 Album.facesIndex = function(id, key) {
     
     // // Data for POST
@@ -54,6 +52,38 @@ Album.addFacesCollection = function() {
   });
   return false;
 
+}
+
+Album.deleteFace = function(info, btn) {
+
+  var data = {
+    collection_id: info.collection_id,
+    face_id: info.face_id
+  };
+  console.log(data);
+  $.ajax({
+    type: "POST",
+    data: data,
+    url: '/api/faces/delete-face',
+    dataType: "json",
+    success: function (res) {
+      console.log(res);
+      if (res.ack == 'ok') {
+        $(btn).closest('.face-item').remove();
+        iziToast.success({
+          title: 'OK',
+          message: res.msg
+        });
+      }
+      else {
+        iziToast.error({
+          title: 'Can\'t delete face',
+          message: 'Error: '+res.msg
+        });
+      }
+    }
+  });
+  return false;
 }
 
 Album.deleteFacesCollection = function(info, btn) {

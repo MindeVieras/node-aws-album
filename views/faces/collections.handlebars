@@ -5,7 +5,7 @@
   
   {{# each collections}}
   <li class="faces-collection-item">
-    {{this}}
+    <a href="/faces/list/{{this}}">{{this}}</a>
     <button type="button" data-collection_id="{{this}}" class="btn btn-default btn-xs pull-right" data-function="Album.deleteFacesCollection">
       <i class="fa fa-close"></i>
     </button>

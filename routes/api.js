@@ -18,6 +18,7 @@ module.exports = function(app, passport) {
   app.post('/api/faces/index', isAdmin, faces.indexFaces);
   app.post('/api/faces/add-new-collection', isAdmin, faces.addNewCollection);
   app.post('/api/faces/delete-collection', isAdmin, faces.deleteCollection);
+  app.post('/api/faces/delete-face', isAdmin, faces.deleteFace);
 
 };
 
