@@ -15,7 +15,7 @@ exports.list = function(req, res){
     var sql = 'SELECT * FROM albums WHERE uid = '+connection.escape(req.user.id);
   }
 
-  connection.query(sql, function(err,rows)     {
+  connection.query(sql, function(err,rows) {
           
     if(err)
       console.log("Error Selecting : %s ",err );

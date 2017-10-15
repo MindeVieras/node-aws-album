@@ -1,11 +1,10 @@
 
 <div class="site-name">
-  <a href="/">Album</a>
+  <h1><a href="/">{{title}}</a></h1>
 </div>
 
 <div class="pull-right">
   <ul class="main-menu">
-    <li><a href="/albums"><i class="al-icons albums-lib"></i></a></li>
     {{#is user.access_level 100}}
     <li><a href="/faces"><i class="fa fa-smile-o"></i></a></li>
     <li><a href="/users"><i class="fa fa-users"></i></a></li>
