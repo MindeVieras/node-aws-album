@@ -57,7 +57,7 @@ Album.addAlbum = function() {
     end_date: $('#add_album #end_date').data("DateTimePicker").date().format("YYYY-MM-DD HH:mm:ss"),
     body: tinyMCE.get('album_body').getContent()
   };
-  
+  console.log(data);
   $.ajax({
     type: "POST",
     data: data,
@@ -67,10 +67,6 @@ Album.addAlbum = function() {
       if (res.ack == 'ok') {
 
         Album.toogleSaveButton(false);
-        
-        // iziToast.success({
-        //   title: res.msg
-        // });
 
         // Atach new media files if any
         var mediaData = $('#add_album .uploaded-media-file').map(function(){
@@ -103,8 +99,13 @@ Album.addAlbum = function() {
           console.log('negalima attachinti');
         }
 
-        window.location.replace('/album/edit/'+res.id);
-        // window.location.reload();
+        if (data.id) {
+          iziToast.success({
+            title: res.msg
+          });
+        } else {
+          window.location.replace('/album/edit/'+res.id);
+        }
       }
       else if (res.ack == 'form_err') {
         iziToast.error({

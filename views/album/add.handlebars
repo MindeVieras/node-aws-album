@@ -3,6 +3,9 @@
 
     <form id="add_album" action="/album/add" method="post">
 
+        <!-- empty ID field -->
+        <input type="hidden" id="id" name="id" value="">
+
         <!-- name field -->
         <div class="form-group">
             <input type="text" class="form-control" id="name" name ="name" placeholder="Album name">
