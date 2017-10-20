@@ -61,3 +61,32 @@ Album.rekognitionLabels = function(id, key) {
             });
 
 }
+
+Album.generateVideos = function(key) {
+    
+    // // Data for POST
+    // key: S3 key
+
+    return $.ajax({
+                type: "POST",
+                data: {key:key},
+                url: '/api/media/generate-videos',
+                dataType: "json"
+            });
+
+}
+
+Album.saveVideoMeta = function(id, key) {
+    
+    // // Data for POST
+    // id: Media ID
+    // key: S3 key
+
+    return $.ajax({
+                type: "POST",
+                data: {id: id, key: key},
+                url: '/api/media/save-video-meta',
+                dataType: "json"
+            });
+
+}

@@ -48,21 +48,40 @@ exports.recover = function(req, res){
 exports.hardDelete = function(req, res){
     
     var id = req.body.id;
-    
-    // Firstly delete image and thumbnails from S3
-    deleteFromS3.deleteImage(id, function (err, data) {
-        
-        if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
-        
-        // Delete media
-        connection.query('DELETE FROM media WHERE id = ?', id);
-        // Delete meta
-        connection.query('DELETE FROM media_meta WHERE media_id = ?', id);
-        // Delete rekognition
-        connection.query('DELETE FROM rekognition WHERE media_id = ?', id);
-        
-        return res.send(JSON.stringify({ack: 'ok', msg: 'Media file deleted for good'}));
+    var type = req.body.type;
 
-    });
+    if (type == 'image') {
+        // Firstly delete image and thumbnails from S3
+        deleteFromS3.deleteImage(id, function (err, data) {
+            
+            if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
+            
+            // Delete media
+            connection.query('DELETE FROM media WHERE id = ?', id);
+            // Delete meta
+            connection.query('DELETE FROM media_meta WHERE media_id = ?', id);
+            // Delete rekognition
+            connection.query('DELETE FROM rekognition WHERE media_id = ?', id);
+            
+            return res.send(JSON.stringify({ack: 'ok', msg: 'Image deleted for good'}));
+
+        });
+    } else if (type == 'video') {
+        // Delete video and its styles S3
+        deleteFromS3.deleteVideo(id, function (err, data) {
+            
+            if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
+            
+            // Delete media
+            connection.query('DELETE FROM media WHERE id = ?', id);
+            // Delete meta
+            connection.query('DELETE FROM media_meta WHERE media_id = ?', id);
+            
+            return res.send(JSON.stringify({ack: 'ok', msg: 'Video deleted for good'}));
+
+        });
+    } else {
+        return res.send(JSON.stringify({ack: 'err', msg: 'nothing to delete'}));
+    }
 
 };

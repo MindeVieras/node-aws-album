@@ -9,6 +9,8 @@ module.exports = function(app, passport) {
   app.post('/api/media/save-exif', isAuthed, mediaSave.saveExif);
   app.post('/api/media/generate-thumb', isAuthed, mediaSave.generateThumb);
   app.post('/api/media/rekognition-labels', isAuthed, mediaSave.rekognitionLabels);
+  app.post('/api/media/generate-videos', isAuthed, mediaSave.generateVideos);
+  app.post('/api/media/save-video-meta', isAuthed, mediaSave.saveVideoMeta);
   app.post('/api/media/attach', isAuthed, mediaSave.attachMedia);
 
   app.post('/api/media/move-to-trash', isAuthed, mediaTrash.moveToTrash);

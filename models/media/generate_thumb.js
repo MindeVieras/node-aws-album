@@ -1,5 +1,6 @@
 
 const connection = require('../../config/db');
+const path = require('path');
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws-keys.json');
 const lambda = new AWS.Lambda();
@@ -27,9 +28,9 @@ module.exports.generate = function(key, cb){
             
             if (err) console.log(err);
             
-            var payload = JSON.parse(data.Payload);
-
-            cb(null, payload);  
+            // var payload = JSON.parse(data.Payload);
+            var thumb = '//s3-eu-west-1.amazonaws.com/'+config.bucket+'/thumbs/medium/'+path.basename(key);
+            cb(null, thumb);  
 
         });
           

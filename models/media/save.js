@@ -3,13 +3,15 @@ const connection = require('../../config/db');
 const getImageMeta = require('./get_image_metadata');
 const generateThumb = require('./generate_thumb');
 const getRekognitionLabels = require('./get_rekognition_labels');
+const generateVideos = require('./generate_videos');
+const getVideoMeta = require('./get_video_metadata');
 
 // Save media in DB
 exports.save = function(req, res){
 
     let mediaData = {
         s3_key : req.body.key,
-        mime: req.body.mime,
+        mime: req.body.mime.includes('image') ? 'image' : 'video',
         filesize: req.body.filesize,
         org_filename : req.body.org_filename,
         content_type : req.body.content_type,
@@ -123,12 +125,51 @@ exports.attachMedia = function(req, res){
 
 // Generate Image Thumbnails
 exports.generateThumb = function(req, res){
-    // console.log(req);
-    // console.log(res);
-
     var key = req.body.key;
     generateThumb.generate(key, function(err, response){
         return res.send({ack: 'ok', msg: response});
     });
-    //console.log(key);
 };
+
+// Generate Videos
+exports.generateVideos = function(req, res){
+    var key = req.body.key;
+    generateVideos.generate(key, function(err, response){
+        return res.send({ack: 'ok', msg: response});
+    });
+};
+
+// Get video metadata from lambda and save to DB
+exports.saveVideoMeta = function(req, res){
+    // res.setHeader('Content-Type', 'application/json');
+    // firstly get metadata
+    var key = req.body.key;
+    var mediaId = req.body.id;
+    getVideoMeta.get(key, function (err, metadata) {
+        
+        if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
+
+        return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all video meta saved'}));
+      
+        // save metadata to DB if any
+        // if (metadata !== null && typeof metadata === 'object') {
+        //     // // make meta array
+        //     // var values = [];
+        //     // Object.keys(metadata).forEach(function (key) {
+        //     //     let obj = metadata[key];
+        //     //     values.push([mediaId, key, obj]);
+        //     // });
+
+        //     // // make DB query
+        //     // var sql = "INSERT INTO media_meta (media_id, meta_name, meta_value) VALUES ?";
+        //     // connection.query(sql, [values], function(err, rows) {
+        //     //     if (err) return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
+        //     //     return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all meta saved'}));
+        //     // });
+
+        // } else {
+        //     return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
+        // }
+    });
+};
+

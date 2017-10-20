@@ -1,7 +1,7 @@
 
 <div class="form-wrapper">
 
-    <form id="add_album" action="/album/add" method="post">
+    <form id="add_album">
 
         <!-- empty ID field -->
         <input type="hidden" id="id" name="id" value="">
@@ -12,7 +12,6 @@
         </div>
 
         <!-- start , end date fields -->
-        {{current_date}}
         <div class="dates-wrapper">
             <div class="form-group">
                 <label for="start_date">Start Date</label>
@@ -46,24 +45,22 @@
             {{> general/dropzone_album}}
         </div>
 
-<!-- 
-        {# location field #}
+
+        <!-- location field -->
         <div class="form-group">
             <label for="location_name">Location</label>
-            <input type="text" class="form-control" id="location_name" name="location_name" placeholder="Location name...">
+            <input type="text" class="form-control" id="location_name" name="location_name" placeholder="Location name">
         </div>
         
-        {# map #}
-        <div class="panel panel-default panel-map">
-            <div class="">
-                <div id="album_map"></div>
-            </div>
+        <!-- map -->
+        <div class="map-wrapper">
+            <div id="album_map"></div>
         </div>
-        <div id="album_markers"></div> -->
+        <div id="album_markers" class="hidden"></div>
      
         <!-- body field -->
         <div class="form-group">
-            <label for="album_body">Body</label>
+            <label for="album_body">Description</label>
             <div class="form-control" data-tinymce id="album_body"></div>
         </div>
 <!--    

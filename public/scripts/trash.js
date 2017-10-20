@@ -9,7 +9,7 @@ Album.moveToTrash = function(info, btn) {
     dataType: "json",
     success: function (res) {
       if (res.ack == 'ok') {
-        $(btn).closest('.uploaded-media-file').remove();
+        $(btn).closest('.media-file').remove();
         iziToast.success({
           title: 'OK',
           message: res.msg
@@ -29,10 +29,11 @@ Album.moveToTrash = function(info, btn) {
 Album.trashHardDelete = function(info, btn) {
 
   var id = parseInt(info.mediaid);
+  var type = info.type;
 
   $.ajax({
     type: "POST",
-    data: {id: id},
+    data: {id: id, type: type},
     url: '/api/media/hard-delete',
     dataType: "json",
     success: function (res) {

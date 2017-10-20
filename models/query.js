@@ -5,10 +5,8 @@ const connection = require('../config/db');
 module.exports.getMedia = function(id, limit, cb){
 
   connection.query(`SELECT
-                      media.*,
-                      media_meta.meta_value AS datetime
+                      *
                     FROM media
-                      JOIN media_meta ON media.id = media_meta.media_id AND media_meta.meta_name = 'datetime'
                     WHERE status = 1 AND type_id = ? LIMIT ?`,
       
     [id,limit], function(err,rows) {

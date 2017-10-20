@@ -21,6 +21,7 @@
     "express-device": "^0.4.2",
     "express-handlebars": "*",
     "express-session": "^1.15.3",
+    "ffprobe": "^1.1.0",
     "handlebars-helpers": "^0.9.3",
     "moment": "^2.18.1",
     "morgan": "^1.8.2",
