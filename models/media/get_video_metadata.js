@@ -18,32 +18,28 @@ module.exports.get = function(key, cb){
         
         var payload = JSON.parse(data.Payload);
 
-        // var meta = payload;
+        var meta = payload;
 
-        // if (payload) {
-        //     // console.log(payload);
-        //     var meta = {};
+        if (payload) {
+            // console.log(payload);
+            var meta = {};
 
-        //     // make exif object
-        //     Object.keys(payload.exif).forEach(function (key) {
-        //         if (key == 'DateTimeOriginal') meta.datetime = convertExifDate(payload.exif[key])
-        //         if (key == 'ExifImageWidth') meta.width = payload.exif[key]
-        //         if (key == 'ExifImageHeight') meta.height = payload.exif[key]
-        //         if (key == 'Flash') meta.flash = payload.exif[key]
-        //         if (key == 'ISO') meta.iso = payload.exif[key]
-        //     });
-
-        //     // make image object
-        //     Object.keys(payload.image).forEach(function (key) {
-        //         if (key == 'Make') meta.make = payload.image[key]
-        //         if (key == 'Model') meta.model = payload.image[key]
-        //         if (key == 'Orientation') meta.orientation = payload.image[key]
-        //     });
-        // }
+            // make meta object
+            payload.streams.forEach(function (row) {
+                if (row.codec_type == 'video') {
+                    meta.width = row.width;
+                    meta.height = row.height;
+                    meta.duration = parseFloat(row.duration);
+                    meta.aspect = row.display_aspect_ratio;
+                    meta.frame_rate = eval(row.r_frame_rate);
+                    meta.codec = row.codec_name;
+                    if ('creation_time' in row.tags) meta.datetime = row.tags.creation_time;
+                }
+            });
+        }
         
-        cb(null, payload);
+        cb(null, meta);
   
-
     });
 
 };

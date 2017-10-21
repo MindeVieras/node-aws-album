@@ -292,14 +292,14 @@ Album.initDropzone = function() {
                           // Save image exif metadata
                           Album.saveVideoMeta(res.id, response.key).done(function(res) {                              
                             console.log(res);
-                            // if (res.ack == 'ok') {
-                            //   $(file.previewElement).find('.status-exif').show().addClass('success');
-                            //   $(file.previewElement).find('.file-date-taken').text(res.data.datetime);
-                            // } else {
-                            //   $(file.previewElement).find('.status-exif').show().addClass('error');
-                            // }
+                            if (res.ack == 'ok') {
+                              $(file.previewElement).find('.status-exif').show().addClass('success');
+                              $(file.previewElement).find('.file-date-taken').text(res.data.datetime);
+                            } else {
+                              $(file.previewElement).find('.status-exif').show().addClass('error');
+                            }
                           }).fail(function(err) {
-                            // $(file.previewElement).find('.status-exif').show().addClass('error');
+                            $(file.previewElement).find('.status-exif').show().addClass('error');
                             console.log(err);
                           });
                           // Generate videos
@@ -327,7 +327,7 @@ Album.initDropzone = function() {
                         $(file.previewElement).find('.status-s3').show().addClass('error');
                     }
 
-                }).fail(function() {
+                }).fail(function(err) {
                     $(file.previewElement).find('.status-s3').show().addClass('error');
                     console.log(err);
                 });

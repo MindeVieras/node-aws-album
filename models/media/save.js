@@ -148,28 +148,26 @@ exports.saveVideoMeta = function(req, res){
     getVideoMeta.get(key, function (err, metadata) {
         
         if (err) return res.send(JSON.stringify({ack: 'err', msg: err}));
-
-        return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all video meta saved'}));
       
         // save metadata to DB if any
-        // if (metadata !== null && typeof metadata === 'object') {
-        //     // // make meta array
-        //     // var values = [];
-        //     // Object.keys(metadata).forEach(function (key) {
-        //     //     let obj = metadata[key];
-        //     //     values.push([mediaId, key, obj]);
-        //     // });
+        if (metadata !== null && typeof metadata === 'object') {
+            // make meta array
+            var values = [];
+            Object.keys(metadata).forEach(function (key) {
+                let obj = metadata[key];
+                values.push([mediaId, key, obj]);
+            });
 
-        //     // // make DB query
-        //     // var sql = "INSERT INTO media_meta (media_id, meta_name, meta_value) VALUES ?";
-        //     // connection.query(sql, [values], function(err, rows) {
-        //     //     if (err) return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
-        //     //     return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all meta saved'}));
-        //     // });
+            // make DB query
+            var sql = "INSERT INTO media_meta (media_id, meta_name, meta_value) VALUES ?";
+            connection.query(sql, [values], function(err, rows) {
+                if (err) return res.send(JSON.stringify({ack: 'err', msg: 'cant save meta'}));
+                return res.send(JSON.stringify({ack: 'ok', data: metadata, msg: 'all meta saved'}));
+            });
 
-        // } else {
-        //     return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
-        // }
+        } else {
+            return res.send(JSON.stringify({ack: 'err', msg: 'no meta saved'}));
+        }
     });
 };
 
