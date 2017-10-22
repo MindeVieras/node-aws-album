@@ -1,9 +1,9 @@
 
 const validator = require('validator');
 const moment = require('moment');
+const slugify = require('slugify');
 const connection = require('../config/db');
 const query = require('./query');
-
 // Gets albums list
 exports.list = function(req, res){
 
@@ -105,6 +105,7 @@ exports.save = function(req, res){
 
     let albumData = {
         name : input.name,
+        slug : slugify(input.name.toLowerCase()),
         start_date : input.start_date,
         end_date : input.end_date,
         body : input.body,
