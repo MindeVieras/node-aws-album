@@ -86,7 +86,7 @@ Album.addAlbum = function() {
             title: res.msg
           });
         } else {
-          // window.location.replace('/album/edit/'+res.id);
+          window.location.replace('/album/edit/'+res.id);
         }
       }
       else if (res.ack == 'form_err') {

@@ -60,7 +60,6 @@ exports.edit = function(req, res){
   connection.query(sql, function(err,rows){
           
     if(err) return res.send('SQL error: '+err.code);
-    console.log(rows);
     if(rows[0] != null) {    
       query.getMedia(id, 1000, function(err, media){
         res.render('album/edit', {
