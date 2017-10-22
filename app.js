@@ -51,7 +51,7 @@ app.use(session({
   secret: '<3qjH{rqF,478O`b|+|M>a4H(gR-X>/2rzN*22tI|n5<nm<PU,fX~g659^8)$E;S',
   resave: true,
   saveUninitialized: true
- } ));
+ }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

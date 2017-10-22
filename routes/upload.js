@@ -27,8 +27,6 @@ const upload = multer({
 
 });
 
-//const upload_model = require('../api/upload');
-
 module.exports = function(app, passport) {
 
   app.post('/upload-media', upload.single('file'), function( req, res, next ) {
@@ -37,30 +35,7 @@ module.exports = function(app, passport) {
       key: req.file.key
     };
 
-    // return res.status(200).send(responseFile);
     return res.status(200).send(req.file);
   });
 
 };
-
-// route middleware to make sure
-function isAuthed(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.redirect('/login');
-}
-// route middleware to make sure
-function isAdmin(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated() && req.user.access_level === 100)
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.redirect('/login');
-}
-
