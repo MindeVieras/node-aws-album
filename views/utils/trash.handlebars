@@ -2,9 +2,19 @@
 <ul class="list-default">
 {{# each media}}
   <li class="list-item">
-    <div class="image-wrapper" style="background-image:url({{img s3_key 'small'}});">
-    </div>
     
+    {{#is mime 'image'}}
+    <div class="image-wrapper media-wrapper" style="background-image:url({{img s3_key 'small'}});">
+    </div>
+    {{/is}}
+
+    {{#is mime 'video'}}
+    <div class="video-wrapper media-wrapper">
+      <video class="mini-video-player" controls>
+        <source src="{{video s3_key 'medium'}}" type="video/mp4">
+      </video>
+    </div>
+    {{/is}}
     <div class="info-wrapper">
       {{fileSize filesize}}
     </div>

@@ -12,12 +12,11 @@ module.exports.generate = function(key, cb){
             
         if(err) cb(err);
 
-        var transcodedVideos = [];
         rows.forEach(function(row){
             var ext = path.extname(key);
             var thumbPath = 'videos/thumbs/'+row.name+'/'+path.basename(key, ext)+'-';
             var params = {
-                PipelineId: '1495388973247-jvhq6m',
+                PipelineId: config.transcoder_pipeline,
                 Input: {
                     AspectRatio: 'auto',
                     Container: 'auto',
@@ -36,12 +35,11 @@ module.exports.generate = function(key, cb){
 
             elastictranscoder.createJob(params, function(err, data) {
                 if (err) cb(err);
-                else transcodedVideos.push(data);
+                else console.log(data);
             });
         });
 
-        var thumb = '//s3-eu-west-1.amazonaws.com/'+config.bucket+'/videos/medium/'+path.basename(key);
-        cb(null, thumb);
+        cb(null, 'jobs created');
           
     });
 

@@ -2,7 +2,7 @@
   display: inline-block;
   width: 100%;
   color: $white;
-  .image-preview{
+  .preview-item{
     position: relative;
     width: 100%;
     height: 210px;
@@ -34,9 +34,8 @@
     padding: 0 5px;
     background: rgba(0, 0, 0, 0.5);
   }
-  .status-s3{
+  .status-icon{
     position: absolute;
-    left: 10px;
     bottom: 5px;
     color: $green;
     background: rgba(255,255,255,0.5);
@@ -44,50 +43,21 @@
     &.error {
       color: red;
     }
+  }
+  .status-s3{
+    left: 10px;
   }
   .status-exif{
-    position: absolute;
     left: 40px;
-    bottom: 5px;
-    color: $green;
-    background: rgba(255,255,255,0.5);
-    padding: 0 5px;
-    &.error {
-      color: red;
-    }
   }
   .status-thumb{
-    position: absolute;
     left: 70px;
-    bottom: 5px;
-    color: $green;
-    background: rgba(255,255,255,0.5);
-    padding: 0 5px;
-    &.error {
-      color: red;
-    }
   }
   .status-rekognition{
-    position: absolute;
     left: 100px;
-    bottom: 5px;
-    color: $green;
-    background: rgba(255,255,255,0.5);
-    padding: 0 5px;
-    &.error {
-      color: red;
-    }
   }
   .status-faces{
-    position: absolute;
     left: 130px;
-    bottom: 5px;
-    color: $green;
-    background: rgba(255,255,255,0.5);
-    padding: 0 5px;
-    &.error {
-      color: red;
-    }
   }
   .remove-file{
     position: absolute;
@@ -95,8 +65,8 @@
     right: 5px;
   }
   .video-preview-item{
-    .status-s3{
-      bottom: 38px;
+    .status-icon{
+      bottom: 35px;
     }
   }
 }

@@ -44,11 +44,21 @@
         <div class="list-group files" id="previews">
 
             {{# each media}}
-                <div class="image-preview media-file" data-mediaid={{id}} data-type={{mime}}>
+                <div class="{{#is mime 'image'}}image-preview-item{{/is}}{{#is mime 'video'}}video-preview-item{{/is}} media-file preview-item" data-mediaid={{id}} data-type={{mime}}>
                     
+                    {{#is mime 'image'}}
                     <span class="preview" style="background-image:url({{img s3_key 'large'}})">
                     </span>
+                    {{/is}}
                     
+                    {{#is mime 'video'}}
+                    <span class="preview">
+                        <video class="default-video-player" controls>
+                            <source src="{{video s3_key 'medium'}}" type="video/mp4">
+                        </video>
+                    </span>
+                    {{/is}}
+
                     <div class="file-date-taken">{{datetime}}</div>
                     <div class="file-size">{{fileSize filesize}}</div>
 
@@ -58,21 +68,23 @@
                         <p class="size">{{m.size}}</p>
                     </div>
 
-                    <div class="status-s3">
+                    <div class="status-icon status-s3">
                         <i class="al-icons s3"></i>
                     </div>
-                    <div class="status-exif">
+                    <div class="status-icon status-exif">
                         <i class="al-icons exif"></i>
                     </div>
-                    <div class="status-thumb">
+                    <div class="status-icon status-thumb">
                         <i class="al-icons thumb"></i>
                     </div>
-                    <div class="status-rekognition">
+                    {{#is mime 'image'}}
+                    <div class="status-icon status-rekognition">
                         <i class="al-icons rekognition"></i>
                     </div>
-                    <div class="status-faces">
+                    <div class="status-icon status-faces">
                         <i class="fa fa-smile-o"></i>
                     </div>
+                    {{/is}}
 
                     <span class="btn btn-danger btn-xs remove-file tip-default" title="Delete" data-mediaid={{id}} data-function="Album.moveToTrash">
                         <i class="fa fa-remove"></i>

@@ -254,6 +254,7 @@ Album.initDropzone = function() {
                                     // gets presigned media url
                                     Album.getImageUrl(response.key, 'medium').done(function(res){
                                       $(file.previewElement).find('.preview').css('background-image', 'url('+res.msg+')');
+                                      $(file.previewElement).addClass('image-preview-item');
                                     });
                                     
                                 } else {
@@ -307,17 +308,17 @@ Album.initDropzone = function() {
                           });
                           // Generate videos
                           Album.generateVideos(response.key).done(function(res) {
-                            // console.log(res);
+                            console.log(res);
                               if (res.ack == 'ok') {
-                                setTimeout(function(){
+                                
+                                $(file.previewElement).find('.status-thumb').show().addClass('success');
+                                $(file.previewElement).addClass('video-preview-item');
+
                                 // gets presigned media url
                                 Album.getVideoUrl(response.key, 'medium').done(function(res){
                                   var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+res.msg+'"><source src="'+res.msg+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
                                   $(file.previewElement).find('.preview').append(video);
                                 });
-                                }, 8000);
-
-                                $(file.previewElement).find('.status-thumb').show().addClass('success');
 
                               } else {
                                   $(file.previewElement).find('.status-thumb').show().addClass('error');

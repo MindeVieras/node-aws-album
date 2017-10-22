@@ -7,7 +7,7 @@
     float: left;
     padding: 5px;
     box-sizing: border-box;
-    .image-wrapper {
+    .media-wrapper {
       background-color: grey;
       background-position: center;
       background-repeat: no-repeat;
@@ -17,5 +17,8 @@
       width: 125px;
       height: 125px;
     }
+  }
+  video {
+    @include vertical-align(relative);
   }
 }
