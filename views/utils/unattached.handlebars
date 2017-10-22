@@ -1,6 +1,7 @@
 
 <ul class="list-default">
 {{# each media}}
+
   <li class="list-item">
     <div class="image-wrapper" style="background-image:url({{img s3_key 'small'}});">
     </div>
@@ -8,7 +9,7 @@
     <div class="info-wrapper">
       {{fileSize filesize}}
     </div>
-
+{{mime}}
     <span class="btn btn-danger btn-xs tip-default" title="Delete permanently" data-function="Album.trashHardDelete" data-mediaid={{id}} data-type={{mime}}>
         <i class="fa fa-remove"></i>
     </span>

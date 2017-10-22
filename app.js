@@ -5,6 +5,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const device = require('express-device');
 const helpers = require('handlebars-helpers')();
+const helpers_custom = require('./config/helpers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -35,12 +36,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 const hbs = exphbs.create({
     defaultLayout: 'main',
     //helpers: helpers,
-    helpers: {
-      img: function (key, size) {
-            // console.log(size);
-            return '//s3-eu-west-1.amazonaws.com/'+config.bucket+'/thumbs/'+size+'/'+path.basename(key);
-          }
-    },
+    helpers: helpers_custom,
     partialsDir: [
         'views/partials/'
     ]

@@ -90,3 +90,33 @@ Album.saveVideoMeta = function(id, key) {
             });
 
 }
+
+Album.getImageUrl = function(key, style) {
+    
+    // // Data for POST
+    // key: S3 key
+    // style: media style name
+
+    return $.ajax({
+                type: "POST",
+                data: {key: key, style: style},
+                url: '/api/media/get-image-url',
+                dataType: "json"
+            });
+
+}
+
+Album.getVideoUrl = function(key, preset) {
+    
+    // // Data for POST
+    // key: S3 key
+    // preset: video preset name
+
+    return $.ajax({
+                type: "POST",
+                data: {key: key, preset: preset},
+                url: '/api/media/get-video-url',
+                dataType: "json"
+            });
+
+}

@@ -6,6 +6,8 @@ const getRekognitionLabels = require('./get_rekognition_labels');
 const generateVideos = require('./generate_videos');
 const getVideoMeta = require('./get_video_metadata');
 
+const helpers_custom = require('../../config/helpers');
+
 // Save media in DB
 exports.save = function(req, res){
 
@@ -171,3 +173,18 @@ exports.saveVideoMeta = function(req, res){
     });
 };
 
+// Gets presigned image url
+exports.getImageUrl = function(req, res){
+    var key = req.body.key;
+    var style = req.body.style;
+    var url = helpers_custom.img(key, style);
+    return res.send({ack: 'ok', msg: url});
+};
+
+// Gets presigned video url
+exports.getVideoUrl = function(req, res){
+    var key = req.body.key;
+    var preset = req.body.preset;
+    var url = helpers_custom.video(key, preset);
+    return res.send({ack: 'ok', msg: url});
+};

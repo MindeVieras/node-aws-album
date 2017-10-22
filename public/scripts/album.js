@@ -251,8 +251,11 @@ Album.initDropzone = function() {
                             Album.generateThumb(response.key).done(function(res) {
                                 if (res.ack == 'ok') {
                                     $(file.previewElement).find('.status-thumb').show().addClass('success');
-                                    // $(file.previewElement).css('background-image', res.msg);
-                                    $(file.previewElement).find('.preview').css('background-image', 'url('+res.msg+')');
+                                    // gets presigned media url
+                                    Album.getImageUrl(response.key, 'medium').done(function(res){
+                                      $(file.previewElement).find('.preview').css('background-image', 'url('+res.msg+')');
+                                    });
+                                    
                                 } else {
                                     $(file.previewElement).find('.status-thumb').show().addClass('error');
                                 }
@@ -291,7 +294,7 @@ Album.initDropzone = function() {
                         if(type == 'video'){
                           // Save image exif metadata
                           Album.saveVideoMeta(res.id, response.key).done(function(res) {                              
-                            console.log(res);
+                            // console.log(res);
                             if (res.ack == 'ok') {
                               $(file.previewElement).find('.status-exif').show().addClass('success');
                               $(file.previewElement).find('.file-date-taken').text(res.data.datetime);
@@ -303,23 +306,27 @@ Album.initDropzone = function() {
                             console.log(err);
                           });
                           // Generate videos
-                          // Album.generateVideos(response.key).done(function(res) {
-                          //   console.log(res);
-                          //     // if (res.ack == 'ok') {
-                          //     //     $(file.previewElement).find('.status-thumb').show().addClass('success');
-                          //     //     // $(file.previewElement).css('background-image', res.msg);
-                          //     //     $(file.previewElement).find('.preview').css('background-image', 'url('+res.msg+')');
-                          //     // } else {
-                          //     //     $(file.previewElement).find('.status-thumb').show().addClass('error');
-                          //     // }
-                          // }).fail(function(err) {
-                          //     // $(file.previewElement).find('.status-thumb').show().addClass('error');
-                          //     console.log(err);
-                          // });
-                          // var videoPath = s3bucket+response.location;
-                          // var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+videoPath+'"><source src="'+videoPath+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
-                          // $(file.previewElement).find('.preview').append(video);
-                          // $(file.previewElement).addClass('video-preview-item');
+                          Album.generateVideos(response.key).done(function(res) {
+                            // console.log(res);
+                              if (res.ack == 'ok') {
+                                setTimeout(function(){
+                                // gets presigned media url
+                                Album.getVideoUrl(response.key, 'medium').done(function(res){
+                                  var video = '<video class="saved-file" width="320" height="210" controls data-thumb-org="'+res.msg+'"><source src="'+res.msg+'" type="video/mp4">Your browser does not support HTML5 video.</video>';
+                                  $(file.previewElement).find('.preview').append(video);
+                                });
+                                }, 8000);
+
+                                $(file.previewElement).find('.status-thumb').show().addClass('success');
+
+                              } else {
+                                  $(file.previewElement).find('.status-thumb').show().addClass('error');
+                              }
+                          }).fail(function(err) {
+                              $(file.previewElement).find('.status-thumb').show().addClass('error');
+                              console.log(err);
+                          });
+
                         }
 
                     } else {

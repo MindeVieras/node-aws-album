@@ -85,7 +85,7 @@ exports.handle = function(event, context, callback) {
                     Bucket: dstBucket,
                     Key: "thumbs/" + versions[ind].name + "/" + path.basename(srcKey),
                     Body: buffers[ind],
-                    ACL: "public-read",
+                    ServerSideEncryption: "AES256",
                     ContentType: contentType
                 }, cb);
             };

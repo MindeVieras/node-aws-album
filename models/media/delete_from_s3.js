@@ -57,29 +57,47 @@ module.exports.deleteImage = function(id, cb){
 module.exports.deleteVideo = function(id, cb){
 
     // Get media S3 key form DB
-    connection.query('SELECT s3_key FROM media WHERE id = ?', id, function(err,rows){
+    connection.query(`SELECT m.s3_key, mm.meta_value AS duration
+                        FROM media AS m
+                            JOIN media_meta AS mm ON m.id = mm.media_id AND mm.meta_name = 'duration'
+                        WHERE m.id = ? AND m.mime = 'video'`, id, function(err,rows){
         if(err) return cb('Can\'t find media in DB: '+err.code);
 
         // Check if any
         if (rows[0] != null) {
+            const key = rows[0].s3_key;
+            const duration = parseFloat(rows[0].duration);
             
-            const key = rows[0].s3_key
             // Get image media styles form DB
             connection.query('SELECT * FROM video_presets', function(err,rows){
                 if(err) return cb('Can\'t get preset: '+err.code);
-
+                
                 // make array of S3 objects
                 var keysArray = [];
+
+                // Original video
                 var orgKeyObj = new Object();
                 orgKeyObj['Key'] = key;
                 keysArray.push(orgKeyObj);
 
+                // Transcoded videos
+                var thumbCount = Math.ceil(duration / 60);
                 rows.forEach(function(row){
                     var keyObj = new Object();
                     keyObj['Key'] = 'videos/'+row.name+'/'+path.basename(key);
                     keysArray.push(keyObj);
+                    // video thumbs
+                    for (i = 0; i < thumbCount; i++) {
+                        var ext = path.extname(key);
+                        var thumbKey = makeCount(i+1)+'.jpg';
+                        var formattedKey = path.basename(key, ext)+'-'+thumbKey;
+
+                        var thumbObj = new Object();
+                        thumbObj['Key'] = 'videos/thumbs/'+row.name+'/'+formattedKey;
+                        keysArray.push(thumbObj);
+                    }
                 });
-                
+
                 var params = {
                     Bucket: config.bucket, 
                     Delete: {
@@ -87,7 +105,7 @@ module.exports.deleteVideo = function(id, cb){
                         Quiet: false
                     }
                 };
-                
+
                 s3.deleteObjects(params, function(err, data) {
                     if (err) console.log(err);
                     else cb(null, data);
@@ -102,3 +120,9 @@ module.exports.deleteVideo = function(id, cb){
     });
 
 };
+
+function makeCount(i) {
+    var str = ''+i;
+    var pad = '00000';
+    return pad.substring(0, pad.length - str.length) + str;
+}

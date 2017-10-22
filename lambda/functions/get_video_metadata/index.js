@@ -6,10 +6,9 @@ var ffprobe = require('ffprobe');
 var ffprobeStatic = require('ffprobe-static');
 
 exports.handle = function(e, ctx, cb) {
-  var bucket = e['bucket'];
-  var srcKey = e['srcKey'];
+  var url = e['url'];
 
-  ffprobe('https://s3-eu-west-1.amazonaws.com/'+bucket+'/'+srcKey, { path: ffprobeStatic.path }, function (err, data) {
+  ffprobe(url, { path: ffprobeStatic.path }, function (err, data) {
     
     if (err) cb(err);
     

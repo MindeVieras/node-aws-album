@@ -2,14 +2,21 @@
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws-keys.json');
 const lambda = new AWS.Lambda();
+const s3 = new AWS.S3();
 const config = require('../../config/config');
 
 module.exports.get = function(key, cb){
 
+    // Get presigned url
+    var url = s3.getSignedUrl('getObject', {
+        Bucket: config.bucket, 
+        Key: key,
+        Expires: 60
+    });
     // Get S3 file metadata from lambda
     let params = {
         FunctionName: 'aws-album_get_video_metadata',
-        Payload: '{"srcKey": "'+key+'", "bucket": "'+config.bucket+'"}'
+        Payload: '{"url": "'+url+'"}'
     };
 
     lambda.invoke(params, function(err, data) {
