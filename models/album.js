@@ -4,6 +4,7 @@ const moment = require('moment');
 const slugify = require('slugify');
 const connection = require('../config/db');
 const query = require('./query');
+
 // Gets albums list
 exports.list = function(req, res){
 

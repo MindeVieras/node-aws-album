@@ -18,8 +18,19 @@
 @import 'partials/messages';
 @import 'partials/footer';
 
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  background: $white;
+  background-image: url('/images/bg.jpg');
+  background-color: $black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: $white;
   font-family: 'Ubuntu', sans-serif;
   font-size: 16px;
   line-height: 1;
